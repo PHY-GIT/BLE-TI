@@ -34,7 +34,7 @@ void sys_init(void)
 {   
     InitClock();             //设置系统时钟源为 32MHZ晶振
 	InitLed();               //设置LED灯相关IO口
-	InitKey();               //设置按键相关IO口
+	//InitKey();               //设置按键相关IO口
 	//Timer1_Init();           //定时器1
 	//Timer3_Init();           //定时器1
 	Uart0_Init();            //串口初始化

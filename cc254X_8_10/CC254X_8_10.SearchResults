@@ -1,4 +1,1 @@
----- DISABLE_ALL_INTERRUPTS Matches (3 in 2 files) ----
-Main.c (user):#define DISABLE_ALL_INTERRUPTS() (IEN0 = IEN1 = IEN2 = 0x00)//三个
-Main.c (user):    DISABLE_ALL_INTERRUPTS();
-Sensor.c (driver\src):   DISABLE_ALL_INTERRUPTS();     //关闭所有中断 
+---- ADCCON1 Matches (0 in 0 files) ----

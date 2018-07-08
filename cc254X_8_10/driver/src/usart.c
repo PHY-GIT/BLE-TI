@@ -79,7 +79,7 @@ void UartDispose(void)
         if(RxBuf != 0) 
         {         
     
-            LED1 =1;
+            //LED1 =1;
             if((RxBuf != '#')&&(count < 50))//以'＃'为结束符,一次最多接收50个字符            
                 RxData[count++] = RxBuf; 
             else
@@ -98,7 +98,7 @@ void UartDispose(void)
     
     if (UartState == UART0_TX)              //发送状态 
     {     
-        LED1 =0; 
+        //LED1 =0; 
         U0CSR &= ~0x40;                    //禁止接收 
         UartSendString(RxData, count);     //发送已记录的字符串。
         U0CSR |= 0x40;                     //允许接收 

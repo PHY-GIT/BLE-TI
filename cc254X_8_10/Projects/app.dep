@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>737071626</fileChecksum>
+  <configuration>
+    <name>Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\driver\inc\adc.h</file>
+      <file>$PROJ_DIR$\..\driver\inc\key.h</file>
+      <file>$PROJ_DIR$\..\driver\inc\comm.h</file>
+      <file>$PROJ_DIR$\..\driver\inc\led.h</file>
+      <file>$PROJ_DIR$\..\driver\inc\otp_var.h</file>
+      <file>$PROJ_DIR$\..\driver\inc\sensor.h</file>
+      <file>$PROJ_DIR$\..\driver\inc\timer.h</file>
+      <file>$PROJ_DIR$\..\driver\inc\usart.h</file>
+      <file>$PROJ_DIR$\..\driver\inc\user.h</file>
+      <file>$PROJ_DIR$\..\driver\src\adc.c</file>
+      <file>$PROJ_DIR$\..\driver\src\key.c</file>
+      <file>$PROJ_DIR$\..\driver\src\led.c</file>
+      <file>$PROJ_DIR$\..\driver\src\sensor.c</file>
+      <file>$PROJ_DIR$\..\driver\src\timer.c</file>
+      <file>$PROJ_DIR$\..\driver\src\usart.c</file>
+      <file>$PROJ_DIR$\..\user\main.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\timer.r51</file>
+      <file>$PROJ_DIR$\Debug\Obj\led.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\led.r51</file>
+      <file>$PROJ_DIR$\Debug\Obj\adc.r51</file>
+      <file>$TOOLKIT_DIR$\inc\clib\sysmac.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\key.r51</file>
+      <file>$PROJ_DIR$\Debug\Obj\usart.r51</file>
+      <file>$TOOLKIT_DIR$\inc\clib\stdarg.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\app.pbd</file>
+      <file>$PROJ_DIR$\Debug\Obj\key.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\clib\stdio.h</file>
+      <file>$TOOLKIT_DIR$\inc\clib\string.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r51</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Debug\Exe\app.d51</file>
+      <file>$TOOLKIT_DIR$\lib\clib\cl-pli-blxd-1e16x01.r51</file>
+      <file>$TOOLKIT_DIR$\config\devices\Texas Instruments\lnk51ew_CC2540F256_banked.xcl</file>
+      <file>$PROJ_DIR$\Debug\Obj\adc.pbi</file>
+      <file>$PROJ_DIR$\Debug\Exe\app.hex</file>
+      <file>$TOOLKIT_DIR$\inc\ioCC2540.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\sensor.r51</file>
+      <file>$PROJ_DIR$\Debug\Obj\timer.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\usart.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\sensor.pbi</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\..\driver\src\adc.c</name>
+      <outputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 19</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 33</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 0 2 35 4 8 26 23 20 27 3 6 7 1 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 0 2 35 4 8 26 23 20 27 3 6 7 1 5</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\driver\src\key.c</name>
+      <outputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 21</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 1 2 35 4 8 26 23 20 27 3 6 7 0 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 1 2 35 4 8 26 23 20 27 3 6 7 0 5</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\driver\src\led.c</name>
+      <outputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 18</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 3 2 35 4 8 26 23 20 27 6 7 0 1 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 2 35 4 8 26 23 20 27 6 7 0 1 5</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\driver\src\sensor.c</name>
+      <outputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 36</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 39</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 5 2 35 4 8 26 23 20 27 3 6 7 0 1</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 2 35 4 8 26 23 20 27 3 6 7 0 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\driver\src\timer.c</name>
+      <outputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 16</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 37</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 6 2 35 4 8 26 23 20 27 3 7 0 1 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 6 2 35 4 8 26 23 20 27 3 7 0 1 5</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\driver\src\usart.c</name>
+      <outputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 22</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 38</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 7 2 35 4 8 26 23 20 27 3 6 0 1 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7 2 35 4 8 26 23 20 27 3 6 0 1 5</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\user\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 28</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 8 26 23 20 27 2 35 4 3 6 7 0 1 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8 26 23 20 27 2 35 4 3 6 7 0 1 5</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Obj\app.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 33 25 17 29 39 37 38</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 30 34</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\app.d51</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 34</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 32 19 21 18 28 36 16 22 31</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>[REBUILD_ALL]</name>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+

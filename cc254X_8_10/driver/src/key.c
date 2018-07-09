@@ -1,5 +1,6 @@
 #include "key.h"
 #include "led.h"
+#include "hold.h"
 
 /****************************************************************************
 * 名    称: InitKey()
@@ -44,10 +45,10 @@ bool key_scan(void)
 #pragma vector = P0INT_VECTOR
 __interrupt void P0_ISR(void)
 {
-    DelayMS(10);  //延时去抖
-    LED2 = ~LED2; //改变 LED1 状态
     P0IFG = 0;    //清中断标志
     P0IF = 0;     //清中断标志
+    SysPowerMode(4);         //正常工作模式
 }
+
 
 

@@ -1,1 +1,3 @@
----- ADCCON1 Matches (0 in 0 files) ----
+---- uchar Matches (2 in 2 files) ----
+Comm.h (driver\inc):typedef unsigned char uchar;
+Sensor.c (driver\src):   uchar tmpADCCON3 = ADCCON3;

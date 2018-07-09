@@ -9,6 +9,8 @@
 #define ADC_TO_CELSIUS(ADC_VALUE)       ((ADC_VALUE>>4)-334)   //ÎÂ¶ÈÐ£Õý
 
 void InitSensor(void);
+
+void Temperature(void);
 float GetTemperature(void);
 
 

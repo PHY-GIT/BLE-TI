@@ -27,9 +27,8 @@ void Uart0_Init(void)
     U0CSR |= 0x40;           //允许接收 
     IEN0 |= 0x84;            //开总中断允许接收中断  
 
-    UartState = UART0_RX;                      //串口0默认处于接收模式
-    memset(RxData, 0, SIZE);
-    
+    //UartState = UART0_RX;                      //串口0默认处于接收模式
+    //memset(RxData, 0, SIZE); 
 }
 
 /****************************************************************************

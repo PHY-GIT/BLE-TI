@@ -32,13 +32,13 @@ void InitClock(void)
 ****************************************************************************/
 void sys_init(void)
 {   
-    InitClock();             //设置系统时钟源为 32MHZ晶振
+    //InitClock();             //设置系统时钟源为 32MHZ晶振
 	InitLed();               //设置LED灯相关IO口
-	//InitKey();               //设置按键相关IO口
+	InitKey();               //设置按键相关IO口
 	//Timer1_Init();           //定时器1
 	//Timer3_Init();           //定时器1
-	Uart0_Init();            //串口初始化
-    InitSensor();            //传感器初始化
+	//Uart0_Init();            //串口初始化
+    //InitSensor();            //传感器初始化
     //sys_var_init();
 }
 
@@ -47,26 +47,19 @@ void sys_init(void)
 ****************************************************************************/
 void main(void)
 {
-    char i; 
-    float AvgTemp;   
-    char strTemp[6];
-
     sys_init();              //系统初始化 
     
-    while(1)
-    { 
-        AvgTemp = 0;          
-        for (i=0; i<64; i++) 
-        {    
-            AvgTemp += GetTemperature();              
+    while(1){
+        for (uchar i=0; i<6; i++)  //LED1闪烁3次提醒用户将进入睡眠模式
+        {
+            LED1 = ~LED1;
+            DelayMS(500);
         }
-        
-        AvgTemp = AvgTemp/64;             //每次累加后除 64
-       
-        memset(strTemp, 0, 6);
-        sprintf(strTemp,"%.02f", AvgTemp);//将浮点数转成字符串
-        UartSendString(strTemp, 5);       //通过串口发给电脑显示芯片温度
-        DelayMS(1000);                    //延时
-    } 
 
+        SysPowerMode(3);     //进入睡眠模式PM3,按下按键S1中断唤醒系统
+    }
 }
+
+
+
+

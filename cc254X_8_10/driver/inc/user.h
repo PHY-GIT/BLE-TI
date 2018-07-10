@@ -15,8 +15,7 @@
 #include "sensor.h"
 #include "hold.h"
 #include "config_setting.h"
-
-
+#include "oled_lcd.h"
 
 
 #endif

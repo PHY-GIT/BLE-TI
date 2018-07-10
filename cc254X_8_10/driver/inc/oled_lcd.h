@@ -1,13 +1,13 @@
-#ifndef __LCD_H_
-#define __LCD_H_
+#ifndef _OLED_LCD_H_
+#define _OLED_LCD_H_
 
 #include "comm.h"
 
 //io_set
-#define LCD_SCL P1_5       //SCLK  时钟 D0（SCLK）
-#define LCD_SDA P1_6       //SDA   D1（MOSI） 数据
-#define LCD_RST P1_7       //_RES  hardware reset   复位 
-#define LCD_DC  P1_2       //A0  H/L 命令数据选通端，H：数据，L:命令
+#define LCD_SCL P1_5       //SCLK  ?? D0(SCLK)
+#define LCD_SDA P1_6       //SDA   D1(MOSI) ??
+#define LCD_RST P1_7       //_RES  hardware reset   ?? 
+#define LCD_DC  P1_2       //A0  H/L ???????,H:??,L:??
 
 
 #define XLevelL        0x00
@@ -30,6 +30,8 @@ void LCD_CLS(void);
 void LCD_Init(void);
 void LCD_P6x8Str(uchar x, uchar y,uchar ch[]);
 void LCD_P8x16Str(uchar x, uchar y,uchar ch[]);
+void LCD_P16x16Ch(uchar x, uchar y, uchar N);
 void Draw_BMP(uchar x0, uchar y0,uchar x1, uchar y1,uchar BMP[]);
+
 
 #endif

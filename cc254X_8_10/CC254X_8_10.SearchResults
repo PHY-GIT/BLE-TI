@@ -1,4 +1,2 @@
----- LCD_RST Matches (3 in 2 files) ----
-Lcd.c (driver\src):    LCD_RST=0;
-Lcd.c (driver\src):    LCD_RST=1;      //从上电到下面开始初始化要有足够的时间，即等待RC复位完毕   
-Lcd.h (driver\inc):#define LCD_RST P1_7       //_RES  hardware reset   复位 
+---- Y_WIDTH Matches (1 in 1 files) ----
+Lcd.h (driver\inc):#define Y_WIDTH        64

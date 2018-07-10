@@ -1,8 +1,8 @@
-#include "lcd.h"
+#include "oled_lcd.h"
 #include "font_table.h"
 
 
-/*********************LCD ÑÓÊ±1ms************************************/
+/*********************LCD ??1ms************************************/
 void LCD_DLY_ms(uint ms)
 {                         
     uint a;
@@ -14,12 +14,12 @@ void LCD_DLY_ms(uint ms)
     }
     return;
 }
-/*********************LCDÐ´Êý¾Ý************************************/ 
+/*********************LCD???************************************/ 
 void LCD_WrDat(uchar dat)     
 {
     uchar i=8, temp=0;
-    LCD_DC=1;        //Êý¾Ý
-    for(i=0;i<8;i++) //·¢ËÍÒ»¸ö°ËÎ»Êý¾Ý 
+    LCD_DC=1;        //??
+    for(i=0;i<8;i++) //???????? 
     {
         LCD_SCL=0;  
         
@@ -36,12 +36,12 @@ void LCD_WrDat(uchar dat)
         dat<<=1;    
     }
 }
-/*********************LCDÐ´ÃüÁî************************************/                                        
+/*********************LCD???************************************/                                        
 void LCD_WrCmd(uchar cmd)
 {
     uchar i=8, temp=0;
     LCD_DC=0;
-    for(i=0;i<8;i++) //·¢ËÍÒ»¸ö°ËÎ»Êý¾Ý 
+    for(i=0;i<8;i++) //???????? 
     { 
         LCD_SCL=0; 
        
@@ -58,14 +58,14 @@ void LCD_WrCmd(uchar cmd)
         cmd<<=1;;        
     }     
 }
-/*********************LCD ÉèÖÃ×ø±ê************************************/
+/*********************LCD ????************************************/
 void LCD_Set_Pos(uchar x, uchar y) 
 { 
     LCD_WrCmd(0xb0+y);
     LCD_WrCmd(((x&0xf0)>>4)|0x10);
     LCD_WrCmd((x&0x0f)|0x01); 
 } 
-/*********************LCDÈ«ÆÁ************************************/
+/*********************LCD??************************************/
 void LCD_Fill(uchar bmp_dat) 
 {
     uchar y,x;
@@ -78,7 +78,7 @@ void LCD_Fill(uchar bmp_dat)
             LCD_WrDat(bmp_dat);
     }
 }
-/*********************LCD¸´Î»************************************/
+/*********************LCD??************************************/
 void LCD_CLS(void)
 {
     uchar y,x;    
@@ -91,24 +91,24 @@ void LCD_CLS(void)
             LCD_WrDat(0);
     }
 }
-/*********************LCD³õÊ¼»¯************************************/
+/*********************LCD???************************************/
 void LCD_Init(void)     
 {  
-    P1SEL &= 0x1b; //ÈÃ P1.2 P1.5 P1.6 P1.7ÎªÆÕÍ¨IO¿Ú           00011011
-    P1DIR |= 0xe4; //°Ñ P1.2 P1.3 1.7ÉèÖÃÎªÊä³ö                 11100100    
+    P1SEL &= 0x1b; //? P1.2 P1.5 P1.6 P1.7???IO?           00011011
+    P1DIR |= 0xe4; //? P1.2 P1.3 1.7?????                 11100100    
       
     LCD_SCL=1;
     LCD_RST=0;
     LCD_DLY_ms(50);
-    LCD_RST=1;      //´ÓÉÏµçµ½ÏÂÃæ¿ªÊ¼³õÊ¼»¯ÒªÓÐ×ã¹»µÄÊ±¼ä£¬¼´µÈ´ýRC¸´Î»Íê±Ï   
+    LCD_RST=1;      //??????????????????,???RC????   
     LCD_WrCmd(0xae);//--turn off oled panel
     LCD_WrCmd(0x00);//---set low column address
     LCD_WrCmd(0x10);//---set high column address
     LCD_WrCmd(0x40);//--set start line address  Set Mapping RAM Display Start Line (0x00~0x3F)
     LCD_WrCmd(0x81);//--set contrast control register
     LCD_WrCmd(0xcf); // Set SEG Output Current Brightness
-    LCD_WrCmd(0xa1);//--Set SEG/Column Mapping     0xa0×óÓÒ·´ÖÃ 0xa1Õý³£
-    LCD_WrCmd(0xc8);//Set COM/Row Scan Direction   0xc0ÉÏÏÂ·´ÖÃ 0xc8Õý³£
+    LCD_WrCmd(0xa1);//--Set SEG/Column Mapping     0xa0???? 0xa1??
+    LCD_WrCmd(0xc8);//Set COM/Row Scan Direction   0xc0???? 0xc8??
     LCD_WrCmd(0xa6);//--set normal display
     LCD_WrCmd(0xa8);//--set multiplex ratio(1 to 64)
     LCD_WrCmd(0x3f);//--1/64 duty
@@ -129,10 +129,10 @@ void LCD_Init(void)
     LCD_WrCmd(0xa4);// Disable Entire Display On (0xa4/0xa5)
     LCD_WrCmd(0xa6);// Disable Inverse Display On (0xa6/a7) 
     LCD_WrCmd(0xaf);//--turn on oled panel
-    LCD_Fill(0xff);  //³õÊ¼ÇåÆÁ
+    LCD_Fill(0xff);  //????
     LCD_Set_Pos(0,0);     
 } 
-/***************¹¦ÄÜÃèÊö£ºÏÔÊ¾6*8Ò»×é±ê×¼ASCII×Ö·û´®    ÏÔÊ¾µÄ×ø±ê£¨x,y£©£¬yÎªÒ³·¶Î§0¡«7****************/
+/***************????:??6*8????ASCII???    ?????(x,y),y????0~7****************/
 void LCD_P6x8Str(uchar x, uchar y,uchar ch[])
 {
     uchar c=0,i=0,j=0;      
@@ -147,7 +147,7 @@ void LCD_P6x8Str(uchar x, uchar y,uchar ch[])
         j++;
     }
 }
-/*******************¹¦ÄÜÃèÊö£ºÏÔÊ¾8*16Ò»×é±ê×¼ASCII×Ö·û´®     ÏÔÊ¾µÄ×ø±ê£¨x,y£©£¬yÎªÒ³·¶Î§0¡«7****************/
+/*******************????:??8*16????ASCII???     ?????(x,y),y????0~7****************/
 void LCD_P8x16Str(uchar x, uchar y,uchar ch[])
 {
     uchar c=0,i=0,j=0;
@@ -165,7 +165,7 @@ void LCD_P8x16Str(uchar x, uchar y,uchar ch[])
         j++;
     }
 }
-/*****************¹¦ÄÜÃèÊö£ºÏÔÊ¾16*16µãÕó  ÏÔÊ¾µÄ×ø±ê£¨x,y£©£¬yÎªÒ³·¶Î§0¡«7****************************/
+/*****************????:??16*16??  ?????(x,y),y????0~7****************************/
 void LCD_P16x16Ch(uchar x, uchar y, uchar N)
 {
     uchar wm=0;
@@ -183,7 +183,7 @@ void LCD_P16x16Ch(uchar x, uchar y, uchar N)
         adder += 1;
     }           
 }
-/***********¹¦ÄÜÃèÊö£ºÏÔÊ¾ÏÔÊ¾BMPÍ¼Æ¬128¡Á64ÆðÊ¼µã×ø±ê(x,y),xµÄ·¶Î§0¡«127£¬yÎªÒ³µÄ·¶Î§0¡«7*****************/
+/***********????:????BMP??128×64?????(x,y),x???0~127,y?????0~7*****************/
 void Draw_BMP(uchar x0, uchar y0,uchar x1, uchar y1,uchar BMP[])
 {     
     uint j=0;
@@ -200,3 +200,7 @@ void Draw_BMP(uchar x0, uchar y0,uchar x1, uchar y1,uchar BMP[])
         }
     }
 } 
+
+
+
+

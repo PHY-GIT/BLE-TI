@@ -1,5 +1,7 @@
 #define  OTP_VAR_GLOBALS
 #include "user.h"
+//#include "lcd.h"
+
 
 #define DISABLE_ALL_INTERRUPTS() (IEN0 = IEN1 = IEN2 = 0x00)       //三个
 
@@ -33,8 +35,8 @@ void InitClock(void)
 void sys_init(void)
 {   
     //InitClock();             //设置系统时钟源为 32MHZ晶振
-	InitLed();               //设置LED灯相关IO口
-	InitKey();               //设置按键相关IO口
+	//InitLed();               //设置LED灯相关IO口
+	//InitKey();               //设置按键相关IO口
 	//Timer1_Init();           //定时器1
 	//Timer3_Init();           //定时器1
 	//Uart0_Init();            //串口初始化
@@ -50,34 +52,31 @@ void main(void)
 {
     sys_init();              //系统初始化 
     
-    LED1=1;
-    LED2=1;
-    DelayMS(300);
-
-    LED1=0;
-    LED2=0;
-    DelayMS(300);
-
-    LED1=1;
-    LED2=1;
-    DelayMS(300);
-    
-    LED1=0;
-    LED2=0;
-    DelayMS(300);
-
-    LED1=1;
-    LED2=1;
-    DelayMS(300);  
-    
+    uchar i=0; 
+	InitLed();
+    LCD_Init();                      //oled ???  
+    LCD_Fill(0xff);                  //??? 
+   
     while(1)
     {
-        LED1 = ~LED1;   //仅指示作用。
-        DelayMS(300);
-               
-        //FeetDog();     //喂狗系统将不再主动复位，LED1灯不闪烁,LED2长亮
-                        //注释FeetDog函数时系统不断复位，LED1灯闪烁
+        for(i=0; i<8; i++)
+        {
+            LCD_P16x16Ch(i*16,0,i);  //????
+            LCD_P16x16Ch(i*16,2,i+8);
+            LCD_P16x16Ch(i*16,4,i+16);
+            LCD_P16x16Ch(i*16,6,i+24);
+        } 
+        DelayMS(2000); 
+        LCD_CLS();   
+        LCD_P8x16Str(5,0,"www.AmoMcu.com");   
+        LCD_P8x16Str(20,2,"OLED DISPLAY");   
+
+        LCD_P8x16Str(8,4,"TEL:18588220515"); 
+        LCD_P8x16Str(8,6,"QQ: 11940507");       
+        //LCD_P6x8Str(20,7,"2014-04-08 18:18");    
+        DelayMS(2000);  
     }
+
 }
 
 

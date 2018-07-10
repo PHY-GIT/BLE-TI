@@ -2081,16 +2081,19 @@
         <name>$PROJ_DIR$\..\driver\inc\config_setting.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\driver\inc\font_table.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\driver\inc\hold.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\driver\inc\key.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\driver\inc\lcd.h</name>
+        <name>$PROJ_DIR$\..\driver\inc\led.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\driver\inc\led.h</name>
+        <name>$PROJ_DIR$\..\driver\inc\oled_lcd.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\driver\inc\otp_var.h</name>
@@ -2123,10 +2126,10 @@
         <name>$PROJ_DIR$\..\driver\src\key.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\driver\src\lcd.c</name>
+        <name>$PROJ_DIR$\..\driver\src\led.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\driver\src\led.c</name>
+        <name>$PROJ_DIR$\..\driver\src\oled_lcd.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\driver\src\sensor.c</name>

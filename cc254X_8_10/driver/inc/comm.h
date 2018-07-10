@@ -16,6 +16,7 @@ typedef _Bool          bool, BOOL;
 
 typedef unsigned char uchar;    //u8
 typedef unsigned int  uint;     //u16
+typedef unsigned long ulong;    //u32
 
 //typedef unsigned char  u8, U8, uint8, UINT8, BYTE;
 //typedef signed char    s8, S8, int8, INT8;

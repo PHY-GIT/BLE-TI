@@ -39,6 +39,7 @@ void sys_init(void)
 	//Timer3_Init();           //定时器1
 	//Uart0_Init();            //串口初始化
     //InitSensor();            //传感器初始化
+    //InitSleepTimer();        //初始化休眠定时器
     //sys_var_init();
 }
 
@@ -49,14 +50,33 @@ void main(void)
 {
     sys_init();              //系统初始化 
     
-    while(1){
-        for (uchar i=0; i<6; i++)  //LED1闪烁3次提醒用户将进入睡眠模式
-        {
-            LED1 = ~LED1;
-            DelayMS(500);
-        }
+    LED1=1;
+    LED2=1;
+    DelayMS(300);
 
-        SysPowerMode(3);     //进入睡眠模式PM3,按下按键S1中断唤醒系统
+    LED1=0;
+    LED2=0;
+    DelayMS(300);
+
+    LED1=1;
+    LED2=1;
+    DelayMS(300);
+    
+    LED1=0;
+    LED2=0;
+    DelayMS(300);
+
+    LED1=1;
+    LED2=1;
+    DelayMS(300);  
+    
+    while(1)
+    {
+        LED1 = ~LED1;   //仅指示作用。
+        DelayMS(300);
+               
+        //FeetDog();     //喂狗系统将不再主动复位，LED1灯不闪烁,LED2长亮
+                        //注释FeetDog函数时系统不断复位，LED1灯闪烁
     }
 }
 

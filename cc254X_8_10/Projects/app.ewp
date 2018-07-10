@@ -2078,10 +2078,16 @@
         <name>$PROJ_DIR$\..\driver\inc\comm.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\driver\inc\config_setting.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\driver\inc\hold.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\driver\inc\key.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\driver\inc\lcd.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\driver\inc\led.h</name>
@@ -2108,10 +2114,16 @@
         <name>$PROJ_DIR$\..\driver\src\adc.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\driver\src\config_setting.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\driver\src\hold.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\driver\src\key.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\driver\src\lcd.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\driver\src\led.c</name>

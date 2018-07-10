@@ -4,12 +4,12 @@
 #include "comm.h"
 
 //io_set
-#define LCD_SCL P1_5       //SCLK  ?? D0(SCLK)
-#define LCD_SDA P1_6       //SDA   D1(MOSI) ??
-#define LCD_RST P1_7       //_RES  hardware reset   ?? 
-#define LCD_DC  P1_2       //A0  H/L ???????,H:??,L:??
+#define LCD_SCL P1_5       //SCLK  时钟 D0（SCLK）
+#define LCD_SDA P1_6       //SDA   D1（MOSI） 数据
+#define LCD_RST P1_7       //_RES  hardware reset   复位 
+#define LCD_DC  P1_2       //A0  H/L 命令数据选通端，H：数据，L:命令
 
-
+//SSD1306
 #define XLevelL        0x00
 #define XLevelH        0x10
 #define XLevel         ((XLevelH&0x0F)*16+XLevelL)

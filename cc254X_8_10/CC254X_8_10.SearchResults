@@ -1,2 +1,7 @@
----- Y_WIDTH Matches (1 in 1 files) ----
-Lcd.h (driver\inc):#define Y_WIDTH        64
+---- LCD_P16x16Ch Matches (6 in 3 files) ----
+Main.c (user):            LCD_P16x16Ch(i*16,0,i);  //µ„’Ûœ‘ æ
+Main.c (user):            LCD_P16x16Ch(i*16,2,i+8);
+Main.c (user):            //LCD_P16x16Ch(i*16,4,i+16);
+Main.c (user):            //LCD_P16x16Ch(i*16,6,i+24);
+Oled_lcd.c (driver\src):void LCD_P16x16Ch(uchar x, uchar y, uchar N)
+Oled_lcd.h (driver\inc):void LCD_P16x16Ch(uchar x, uchar y, uchar N);

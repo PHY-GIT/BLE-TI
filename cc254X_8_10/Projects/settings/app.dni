@@ -1,7 +1,8 @@
 [DebugChecksum]
-Checksum=-2134507560
+Checksum=1948399784
 [DisAssemblyWindow]
-NumStates=_ 0
+NumStates=_ 1
+State 1=_ 1
 [InstructionProfiling]
 Enabled=_ 0
 [CodeCoverage]
@@ -42,6 +43,11 @@ ActionState=1
 [TraceHelper]
 Enabled=0
 ShowSource=1
+[Breakpoints]
+Count=0
+[ChipconEmu]
+Stop timers on halt=0
+Leave target running=1
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -49,11 +55,6 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
-[Breakpoints]
-Count=0
-[ChipconEmu]
-Stop timers on halt=0
-Leave target running=1
 [Aliases]
 A0=_ "F:\PHY_GIT\BLE_TI\cc254X_8_10\driver\src\led.c" ""
 A1=_ "F:\PHY_GIT\BLE_TI\cc254X_8_10\user\main.c" ""

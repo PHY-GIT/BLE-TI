@@ -54,27 +54,27 @@ void main(void)
     
     uchar i=0; 
 	InitLed();
-    LCD_Init();                      //oled ???  
-    LCD_Fill(0xff);                  //??? 
+    LCD_Init();                      //oled 初始化 
+    LCD_Fill(0xff);                  //屏全亮
    
     while(1)
     {
         for(i=0; i<8; i++)
         {
-            LCD_P16x16Ch(i*16,0,i);  //????
+            LCD_P16x16Ch(i*16,0,i);  //点阵显示
             LCD_P16x16Ch(i*16,2,i+8);
-            LCD_P16x16Ch(i*16,4,i+16);
-            LCD_P16x16Ch(i*16,6,i+24);
+            //LCD_P16x16Ch(i*16,4,i+16);
+            //LCD_P16x16Ch(i*16,6,i+24);
         } 
         DelayMS(2000); 
-        LCD_CLS();   
-        LCD_P8x16Str(5,0,"www.AmoMcu.com");   
-        LCD_P8x16Str(20,2,"OLED DISPLAY");   
+        //LCD_CLS();   
+        //LCD_P8x16Str(5,0,"www.AmoMcu.com");   
+        //LCD_P8x16Str(20,2,"OLED DISPLAY");   
 
-        LCD_P8x16Str(8,4,"TEL:18588220515"); 
-        LCD_P8x16Str(8,6,"QQ: 11940507");       
+        //LCD_P8x16Str(8,4,"TEL:18588220515"); 
+        //LCD_P8x16Str(8,6,"QQ: 11940507");       
         //LCD_P6x8Str(20,7,"2014-04-08 18:18");    
-        DelayMS(2000);  
+        //DelayMS(2000);  
     }
 
 }

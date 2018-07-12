@@ -24,14 +24,14 @@
 void LCD_DLY_ms(uint ms);
 void LCD_WrDat(uchar dat);
 void LCD_WrCmd(uchar cmd);
-void LCD_Set_Pos(uchar x, uchar y);
+void LCD_Set_Pos(uchar colum, uchar page); 
 void LCD_Fill(uchar bmp_dat);
 void LCD_CLS(void);
 void LCD_Init(void);
-void LCD_P6x8Str(uchar x, uchar y,uchar ch[]);
-void LCD_P8x16Str(uchar x, uchar y,uchar ch[]);
-void LCD_P16x16Ch(uchar x, uchar y, uchar N);
+void LCD_P6x8Str(uchar colum, uchar page,uchar ch[]);
+void LCD_P8x16Str(uchar colum, uchar page,uchar ch[]);
+void LCD_P16x16Ch(uchar colum, uchar page, uchar N);
 void Draw_BMP(uchar x0, uchar y0,uchar x1, uchar y1,uchar BMP[]);
 
-
+void a(uchar colum,uchar page);
 #endif

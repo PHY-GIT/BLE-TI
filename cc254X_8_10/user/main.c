@@ -55,14 +55,18 @@ void main(void)
     uchar i=0; 
 	InitLed();
     LCD_Init();                      //oled 初始化 
-    LCD_Fill(0xff);                  //屏全亮
+    LCD_Fill(0x00);                  //屏全亮
    
     while(1)
     {
+
+		//a(0,0);
+    	//a(0,2);
+		//a(16,2);
         for(i=0; i<8; i++)
         {
-            LCD_P16x16Ch(i*16,0,i);  //点阵显示
-            LCD_P16x16Ch(i*16,2,i+8);
+            //LCD_P16x16Ch(i*16,0,i);  //点阵显示
+            //LCD_P16x16Ch(i*16,2,i+8);
             //LCD_P16x16Ch(i*16,4,i+16);
             //LCD_P16x16Ch(i*16,6,i+24);
         } 

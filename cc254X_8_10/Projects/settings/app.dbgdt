@@ -31,7 +31,7 @@
       
       
       
-    <Wnd0>
+    <Wnd3>
         <Tabs>
           <Tab>
             <Identity>TabID-12140-19356</Identity>
@@ -47,7 +47,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+      <SelectedTab>0</SelectedTab></Wnd3><Wnd4>
         <Tabs>
           <Tab>
             <Identity>TabID-22888-19360</Identity>
@@ -59,7 +59,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd1><Wnd2>
+      <SelectedTab>0</SelectedTab></Wnd4><Wnd5>
         <Tabs>
           <Tab>
             <Identity>TabID-868-19363</Identity>
@@ -69,20 +69,20 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd2></Windows>
+      <SelectedTab>0</SelectedTab></Wnd5></Windows>
     <Editor>
       
       
       
       
-    <Pane/><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\driver\inc\otp_var.h</Filename><XPos>0</XPos><YPos>21</YPos><SelStart>654</SelStart><SelEnd>655</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\user\main.c</Filename><XPos>0</XPos><YPos>44</YPos><SelStart>1446</SelStart><SelEnd>1446</SelEnd></Tab><ActiveTab>1</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\driver\src\usart.c</Filename><XPos>0</XPos><YPos>30</YPos><SelStart>1256</SelStart><SelEnd>1256</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\driver\src\timer.c</Filename><XPos>0</XPos><YPos>41</YPos><SelStart>1102</SelStart><SelEnd>1102</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\driver\inc\key.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>125</SelStart><SelEnd>125</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\driver\inc\led.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>240</SelStart><SelEnd>243</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\driver\src\sensor.c</Filename><XPos>0</XPos><YPos>6</YPos><SelStart>705</SelStart><SelEnd>705</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\driver\src\key.c</Filename><XPos>0</XPos><YPos>38</YPos><SelStart>1245</SelStart><SelEnd>1245</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\driver\inc\usart.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>236</SelStart><SelEnd>236</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\driver\inc\user.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>252</SelStart><SelEnd>252</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\Program Files (x86)\IAR Systems\IAR_8.10\8051\src\lib\dlib\main.h</Filename><XPos>0</XPos><YPos>59</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-07902f40><key>iaridepm.enu1</key></Toolbar-07902f40></Sizes></Row0><Row1><Sizes><Toolbar-104c0a58><key>debuggergui.enu1</key></Toolbar-104c0a58></Sizes></Row1><Row2><Sizes/></Row2></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>387</Bottom><Right>301</Right><x>-2</x><y>-2</y><xscreen>153</xscreen><yscreen>130</yscreen><sizeHorzCX>153924</sizeHorzCX><sizeHorzCY>222603</sizeHorzCY><sizeVertCX>304829</sizeVertCX><sizeVertCY>666096</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>387</Bottom><Right>151</Right><x>-2</x><y>-2</y><xscreen>153</xscreen><yscreen>130</yscreen><sizeHorzCX>153924</sizeHorzCX><sizeHorzCY>222603</sizeHorzCY><sizeVertCX>153924</sizeVertCX><sizeVertCY>666096</sizeVertCY></Rect></Wnd2></Sizes></Row0></Right><Bottom><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>128</Bottom><Right>996</Right><x>-2</x><y>-2</y><xscreen>998</xscreen><yscreen>130</yscreen><sizeHorzCX>1004024</sizeHorzCX><sizeHorzCY>222603</sizeHorzCY><sizeVertCX>153924</sizeVertCX><sizeVertCY>222603</sizeVertCY></Rect></Wnd0></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-08082910><key>iaridepm.enu1</key></Toolbar-08082910></Sizes></Row0><Row1><Sizes><Toolbar-07a7a440><key>debuggergui.enu1</key></Toolbar-07a7a440></Sizes></Row1></Top><Left><Row0><Sizes><Wnd4><Rect><Top>-2</Top><Left>-2</Left><Bottom>387</Bottom><Right>301</Right><x>-2</x><y>-2</y><xscreen>153</xscreen><yscreen>130</yscreen><sizeHorzCX>153924</sizeHorzCX><sizeHorzCY>222603</sizeHorzCY><sizeVertCX>304829</sizeVertCX><sizeVertCY>666096</sizeVertCY></Rect></Wnd4></Sizes></Row0></Left><Right><Row0><Sizes><Wnd5><Rect><Top>-2</Top><Left>-2</Left><Bottom>387</Bottom><Right>151</Right><x>-2</x><y>-2</y><xscreen>153</xscreen><yscreen>130</yscreen><sizeHorzCX>153924</sizeHorzCX><sizeHorzCY>222603</sizeHorzCY><sizeVertCX>153924</sizeVertCX><sizeVertCY>666096</sizeVertCY></Rect></Wnd5></Sizes></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>128</Bottom><Right>996</Right><x>-2</x><y>-2</y><xscreen>998</xscreen><yscreen>130</yscreen><sizeHorzCX>1004024</sizeHorzCX><sizeHorzCY>222603</sizeHorzCY><sizeVertCX>153924</sizeVertCX><sizeVertCY>222603</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Project>
 

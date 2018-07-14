@@ -32,7 +32,5 @@ void LCD_P6x8Str(uchar colum, uchar page,uchar ch[]);
 void LCD_P8x16Str(uchar colum, uchar page,uchar ch[]);
 void LCD_P16x16Ch(uchar colum, uchar page, uchar N);
 void Draw_BMP(uchar x0, uchar y0,uchar x1, uchar y1,uchar BMP[]);
-
-void a(uchar colum,uchar page);
-void b(uchar colum,uchar page);
+void LCD_Logo(void);
 #endif

@@ -146,15 +146,15 @@ void LCD_Init(void)
 void LCD_P6x8Str(uchar colum, uchar page,uchar ch[])
 {
     uchar c=0,i=0,j=0;      
-    while (ch[j]!='\0')
+    while (ch[j]!='\0')					//是否到最后一字符
     {    
-        c =ch[j]-32;
-        if(colum>126){colum=0;page++;}
+        c =ch[j]-32;					//这个是关键，转化计出查表
+        if(colum>122){colum=0;page++;}  //当写完128列自动转下一页
         LCD_Set_Pos(colum,page);    
-        for(i=0;i<6;i++)     
-            LCD_WrDat(F6x8[c][i]);  
-        colum+=6;
-        j++;
+        for(i=0;i<6;i++)                //因为是(6)*8所以是6次，6列
+            LCD_WrDat(F6x8[c][i]);      //二维表，知道开始c的下标，就是i控制6列数据即可
+        colum+=6;						//光标右移6 
+        j++;                            //下标+1
     }
 }
 /****************************************************************************
@@ -174,8 +174,8 @@ void LCD_P8x16Str(uchar colum, uchar page,uchar ch[])
         for(i=0;i<8;i++)                 //8*16共16个byte
            LCD_WrDat(F8X16[c*16+i]);     //上面8个字节 
         LCD_Set_Pos(colum,page+1);       //写下一个8个字节，加一页
-        for(i=0;i<8;i++)     
-            LCD_WrDat(F8X16[c*16+i+8]);  //下面8个字节
+        for(i=0;i<8;i++)                 //因为是(8)*16所以是8次，8列
+            LCD_WrDat(F8X16[c*16+i+8]);  //下面8个字节，因为是8*(16)所以是*16，一维表
         colum+=8;                        //光标右移8    
         j++;                             //下标+1 
     }
@@ -194,7 +194,7 @@ void LCD_P16x16Ch(uchar colum, uchar page, uchar N)
     for(wm = 0;wm < 16;wm++)   		//上面16个byte             
     {
         LCD_WrDat(F16x16[adder]);    
-        adder += 1;
+        adder += 1;                 //下标加一
     }      
     LCD_Set_Pos(colum,page + 1);    //设置一下页的光标 
     for(wm = 0;wm < 16;wm++) 		//下面16个byte         
@@ -222,43 +222,17 @@ void Draw_BMP(uchar x0, uchar y0,uchar x1, uchar y1,uchar BMP[])
 } 
 
 
-
-/*--  文字:  圳  --*/
-/*--  宋体12;  此字体下对应的点阵为：宽x高=16x16   --*/
-const char qwe[] ={
-0x10,0x10,0x10,0xFE,0x10,0x10,0xFE,0x00,0x00,0xFC,0x00,0x00,0x00,0xFE,0x00,0x00,
-0x08,0x08,0x04,0x47,0x24,0x18,0x07,0x00,0x00,0x1F,0x00,0x00,0x00,0x7F,0x00,0x00};
-const char abc[] ={
-0x10,0x61,0x06,0xE0,0x00,0x26,0x22,0x1A,0x02,0xC2,0x0A,0x12,0x32,0x06,0x02,0x00,
-0x04,0xFC,0x03,0x20,0x20,0x11,0x11,0x09,0x05,0xFF,0x05,0x09,0x19,0x31,0x10,0x00};
-
-void a(uchar colum,uchar page)
+void LCD_Logo(void)
 {
-	uchar i;
-    LCD_Set_Pos(colum,page);
-    for (i = 0; i < 16; i++)
-    {
-        LCD_WrDat(abc[i]);
-    }
-	LCD_Set_Pos(colum,page+1);
-	for (i = 16; i < 32; i++)
-    {
-        LCD_WrDat(abc[i]);
-    }
-}
-void b(uchar colum,uchar page)
-{
-	uchar i;
-    LCD_Set_Pos(colum,page);
-    for (i = 0; i < 16; i++)
-    {
-        LCD_WrDat(qwe[i]);
-    }
-	LCD_Set_Pos(colum,page+1);
-	for (i = 16; i < 32; i++)
-    {
-        LCD_WrDat(qwe[i]);
-    }
-}
+	uchar i,j;
+	for(i=0; i<8; i++)
+	{
+		LCD_Set_Pos(0,i);
+		for(j=0; j<128; j++)
+		{
+			LCD_WrDat(logo_2[j+i*128]);
+		}
+	}
 
+}
 

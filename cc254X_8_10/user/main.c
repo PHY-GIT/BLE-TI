@@ -1,6 +1,5 @@
 #define  OTP_VAR_GLOBALS
 #include "user.h"
-//#include "lcd.h"
 
 
 #define DISABLE_ALL_INTERRUPTS() (IEN0 = IEN1 = IEN2 = 0x00)       //三个
@@ -45,6 +44,7 @@ void sys_init(void)
     //sys_var_init();
 }
 
+
 /****************************************************************************
 * 主程序入口函数
 ****************************************************************************/
@@ -71,11 +71,13 @@ void main(void)
             //LCD_P16x16Ch(i*16,4,i+16);
             //LCD_P16x16Ch(i*16,6,i+24);
         } 
+
+		LCD_Logo();
         //DelayMS(2000); 
         //LCD_CLS();   
-        LCD_P8x16Str(5,0,"12345678901234567890123");   
+        //LCD_P6x8Str(0,0,"12345678901234567890123");   
         //LCD_P8x16Str(20,2,"OLED DISPLAY");   
-
+		//Draw_BMP(0, 0,0, 0,&BMP[0]);
         //LCD_P8x16Str(8,4,"TEL:18588220515"); 
         //LCD_P8x16Str(8,6,"QQ: 11940507");       
         //LCD_P6x8Str(20,7,"2014-04-08 18:18");    

@@ -157,22 +157,27 @@ void LCD_P6x8Str(uchar colum, uchar page,uchar ch[])
         j++;
     }
 }
-/*******************功能描述：显示8*16一组标准ASCII字符串     显示的坐标（x,y），y为页范围0～7****************/
+/****************************************************************************
+* 名    称: LCD_P8x16Str()
+* 功    能: 显示8*16一组标准ASCII字符串
+* 入口参数: colum:列地址，page:页地址，ch[]:显示的字符串
+* 出口参数: 无
+****************************************************************************/
 void LCD_P8x16Str(uchar colum, uchar page,uchar ch[])
 {
     uchar c=0,i=0,j=0;
-    while (ch[j]!='\0')
+    while (ch[j]!='\0')                  //是否到最后一字符
     {    
-        c =ch[j]-32;
-        if(colum>120){colum=0;page++;}
+        c =ch[j]-32;                     //这个是关键，转化计出查表
+        if(colum>120){colum=0;page+=2;}  //当写完128列自动转下两页
         LCD_Set_Pos(colum,page);    
+        for(i=0;i<8;i++)                 //8*16共16个byte
+           LCD_WrDat(F8X16[c*16+i]);     //上面8个字节 
+        LCD_Set_Pos(colum,page+1);       //写下一个8个字节，加一页
         for(i=0;i<8;i++)     
-           LCD_WrDat(F8X16[c*16+i]);
-        LCD_Set_Pos(colum,page+1);    
-        for(i=0;i<8;i++)     
-            LCD_WrDat(F8X16[c*16+i+8]);  
-        colum+=8;
-        j++;
+            LCD_WrDat(F8X16[c*16+i+8]);  //下面8个字节
+        colum+=8;                        //光标右移8    
+        j++;                             //下标+1 
     }
 }
 /****************************************************************************
@@ -218,7 +223,11 @@ void Draw_BMP(uchar x0, uchar y0,uchar x1, uchar y1,uchar BMP[])
 
 
 
-
+/*--  文字:  圳  --*/
+/*--  宋体12;  此字体下对应的点阵为：宽x高=16x16   --*/
+const char qwe[] ={
+0x10,0x10,0x10,0xFE,0x10,0x10,0xFE,0x00,0x00,0xFC,0x00,0x00,0x00,0xFE,0x00,0x00,
+0x08,0x08,0x04,0x47,0x24,0x18,0x07,0x00,0x00,0x1F,0x00,0x00,0x00,0x7F,0x00,0x00};
 const char abc[] ={
 0x10,0x61,0x06,0xE0,0x00,0x26,0x22,0x1A,0x02,0xC2,0x0A,0x12,0x32,0x06,0x02,0x00,
 0x04,0xFC,0x03,0x20,0x20,0x11,0x11,0x09,0x05,0xFF,0x05,0x09,0x19,0x31,0x10,0x00};
@@ -237,4 +246,19 @@ void a(uchar colum,uchar page)
         LCD_WrDat(abc[i]);
     }
 }
+void b(uchar colum,uchar page)
+{
+	uchar i;
+    LCD_Set_Pos(colum,page);
+    for (i = 0; i < 16; i++)
+    {
+        LCD_WrDat(qwe[i]);
+    }
+	LCD_Set_Pos(colum,page+1);
+	for (i = 16; i < 32; i++)
+    {
+        LCD_WrDat(qwe[i]);
+    }
+}
+
 

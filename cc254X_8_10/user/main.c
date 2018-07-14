@@ -63,6 +63,7 @@ void main(void)
 		//a(0,0);
     	//a(0,2);
 		//a(16,2);
+		//b(32,2);
         for(i=0; i<8; i++)
         {
             //LCD_P16x16Ch(i*16,0,i);  //µãÕóÏÔÊ¾
@@ -70,9 +71,9 @@ void main(void)
             //LCD_P16x16Ch(i*16,4,i+16);
             //LCD_P16x16Ch(i*16,6,i+24);
         } 
-        DelayMS(2000); 
+        //DelayMS(2000); 
         //LCD_CLS();   
-        //LCD_P8x16Str(5,0,"www.AmoMcu.com");   
+        LCD_P8x16Str(5,0,"12345678901234567890123");   
         //LCD_P8x16Str(20,2,"OLED DISPLAY");   
 
         //LCD_P8x16Str(8,4,"TEL:18588220515"); 

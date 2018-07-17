@@ -1,0 +1,4 @@
+---- NPI_PrintString Matches (3 in 1 files) ----
+SimpleBLETest.c (projects\ble\simpleble\source):  NPI_PrintString("SimpleBLETest_Init2\r\n");  
+SimpleBLETest.c (projects\ble\simpleble\source):  NPI_PrintString("\r\n");  
+SimpleBLETest.c (projects\ble\simpleble\source):  NPI_PrintString("\r\n");  

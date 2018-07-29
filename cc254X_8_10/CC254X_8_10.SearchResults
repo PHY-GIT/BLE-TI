@@ -1,5 +1,4 @@
----- LCD_Fill Matches (4 in 3 files) ----
-Main.c (user):    LCD_Fill(0x00);                  //∆¡»´¡¡
-Oled_lcd.c (driver\src):void LCD_Fill(uchar bmp_dat) 
-Oled_lcd.c (driver\src):    LCD_Fill(0xff);  //≥ı º«Â∆¡
-Oled_lcd.h (driver\inc):void LCD_Fill(uchar bmp_dat);
+---- temperature Matches (3 in 2 files) ----
+Mpu6050.c (driver\src):void MPU6050_GetRawAccelGyro(int16_t* ax, int16_t* ay, int16_t* az, int16_t* temperature, int16_t* gx, int16_t* gy, int16_t* gz) 
+Mpu6050.c (driver\src):    *temperature = (((int16_t)I2CSlaveBuffer[PORT_USED][6]) << 8) | ((int16_t)I2CSlaveBuffer[PORT_USED][7]); 
+Mpu6050.h (driver\inc):    int16_t* temperature, int16_t* gx, int16_t* gy, int16_t* gz);

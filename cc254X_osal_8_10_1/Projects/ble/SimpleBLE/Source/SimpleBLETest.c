@@ -50,6 +50,7 @@
 #include "hal_led.h"
 #include "hal_key.h"
 #include "hal_lcd.h"
+#include "LL.h"
 #include "simpleBLETest.h"
 #include "npi.h"
 #include "stdio.h"
@@ -72,6 +73,7 @@ static uint8 SimpleBLETest_TaskID;   // Task ID for internal task/event processi
  * PUBLIC FUNCTIONS
  */
 static void NpiSerialCallback( uint8 port, uint8 events );
+static void DataAesEncryptAndDecrypTest();
 
 /*********************************************************************
  * @fn      SimpleBLETest_Init
@@ -94,21 +96,13 @@ void SimpleBLETest_Init( uint8 task_id )
   // 串口初始化 波特率默认是115200, 形参是回调函数
   NPI_InitTransport(NpiSerialCallback);
 
-  // 按长度输出
-  NPI_WriteTransport("你SimpleBLETest_Init\r\n", 20);
+  //显示字符串在某一行
+  HalLcdWriteString( "SimpleBLETest 27", HAL_LCD_LINE_1 );
+  HalLcdWriteString( "AmoMcu.com", HAL_LCD_LINE_2 );  
 
-  // 按字符串输出
-  NPI_PrintString("SimpleBLETest_Init2\r\n");  
-
-  // 可以输出一个值，用10进制表示
-  NPI_PrintValue("AmoMcu 1 = ", 168, 10);
-  NPI_PrintString("\r\n");  
-  
-  // 可以输出一个值，用16进制表示
-  NPI_PrintValue("AmoMcu 2 = 0x", 0x88, 16);
-  NPI_PrintString("\r\n");  
-  
-  HalLcdWriteString ( "SimpleBLETest 07", HAL_LCD_LINE_1);
+  //加密与解密测试
+  DataAesEncryptAndDecrypTest();
+    
   // Setup a delayed profile startup  
   /*
   设置一个任务， 这么做的目的是按照多任务处理的方法来做
@@ -145,7 +139,7 @@ uint16 SimpleBLETest_ProcessEvent( uint8 task_id, uint16 events )
 
   // 这个是我们应用程序自定义的事件，SBP_START_DEVICE_EVT 的值被定义为 0x0001， 
   // 实际上我们可以定义 16个事件， 第一的时候是以位来定义的
-  // 
+  // 这个 SBP_PERIODIC_EVT 就是在SimpleBLETest_Init初始化函数最后一行设置的事件
   if ( events & SBP_START_DEVICE_EVT )
   {
     HalLedSet(HAL_LED_1, HAL_LED_MODE_ON);      // 点亮led1               
@@ -200,6 +194,76 @@ static void NpiSerialCallback( uint8 port, uint8 events )
     }
 }
 
+/*********************************************************************
+ * @fn      bdAddr2Str
+ *
+ * @brief   Convert Bluetooth address to string
+ *
+ * @return  none
+ */
+char *bdAddr2Str( uint8 *pAddr )
+{
+#define B_ADDR_STR_LEN                        34
+
+  uint8       i;
+  char        hex[] = "0123456789ABCDEF";
+  static char str[B_ADDR_STR_LEN];
+  char        *pStr = str;
+  
+  *pStr++ = '0';
+  *pStr++ = 'x';
+  
+  // Start from end of addr
+  pAddr += B_ADDR_LEN;
+  
+  for ( i = B_ADDR_LEN; i > 0; i-- )
+  {
+    *pStr++ = hex[*--pAddr >> 4];
+    *pStr++ = hex[*pAddr & 0x0F];
+  }
+  
+  *pStr = 0;
+  
+  return str;
+}
+
+static void DataAesEncryptAndDecrypTest()
+{
+    // 加密秘钥 16个字节=128bit
+    uint8 key[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+
+    // 需要加密的数据
+    uint8 plaintextData[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+
+    // 加密后数据存放区
+    uint8 encryptedData[16];
+
+    // 解密后数据存放区
+    uint8 deccryptedData[16];
+
+    // 开始加密
+    LL_Encrypt( key,  plaintextData, encryptedData );
+
+    /*
+    注意我们解密时需要key，加密后的数据用于进行通信， 这样，如果对方没有key
+    是解码不出来的， 我们使用了16字节也即是128bit的key。
+
+    加密的意义在于保护用户数据不被截取
+    */
+
+    // 开始解密    
+    LL_EXT_Decrypt( key, encryptedData, deccryptedData );
+
+    // 判断机密后的数据是否与原来一样
+    if(osal_memcmp(plaintextData, deccryptedData, 16))
+    {
+        HalLcdWriteString( "Encrypt Decrypt OK", HAL_LCD_LINE_8 );    
+    }
+    else
+    {
+        HalLcdWriteString( "Encrypt Decrypt Fail", HAL_LCD_LINE_8 );    
+    }
+}
 
 /*********************************************************************
 *********************************************************************/

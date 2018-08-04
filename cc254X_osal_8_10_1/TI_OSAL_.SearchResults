@@ -1,4 +1,19 @@
----- NPI_PrintString Matches (3 in 1 files) ----
-SimpleBLETest.c (projects\ble\simpleble\source):  NPI_PrintString("SimpleBLETest_Init2\r\n");  
-SimpleBLETest.c (projects\ble\simpleble\source):  NPI_PrintString("\r\n");  
-SimpleBLETest.c (projects\ble\simpleble\source):  NPI_PrintString("\r\n");  
+---- I2CCFG Matches (17 in 1 files) ----
+
+Hal_i2c.c (components\hal\target\cc2540eb):#define I2C_CLOCK_RATE(x)     st( I2CCFG  &=    ~I2C_CLOCK_MASK;    \
+Hal_i2c.c (components\hal\target\cc2540eb):                                  I2CCFG  |=     x;                 )
+Hal_i2c.c (components\hal\target\cc2540eb):#define I2C_SET_NACK()        st( I2CCFG &= ~I2C_AA; )
+Hal_i2c.c (components\hal\target\cc2540eb):#define I2C_SET_ACK()         st( I2CCFG |=  I2C_AA; )
+Hal_i2c.c (components\hal\target\cc2540eb):#define I2C_ENABLE()          st( I2CCFG |= (I2C_ENS1); )
+Hal_i2c.c (components\hal\target\cc2540eb):#define I2C_DISABLE()         st( I2CCFG &= ~(I2C_ENS1); )
+Hal_i2c.c (components\hal\target\cc2540eb):  I2CCFG &= ~I2C_SI;                \
+Hal_i2c.c (components\hal\target\cc2540eb):  I2CCFG |= I2C_STA;                \
+Hal_i2c.c (components\hal\target\cc2540eb):  while ((I2CCFG & I2C_SI) == 0);   \
+Hal_i2c.c (components\hal\target\cc2540eb):  I2CCFG &= ~I2C_STA; \
+Hal_i2c.c (components\hal\target\cc2540eb):  I2CCFG |= I2C_STO;                \
+Hal_i2c.c (components\hal\target\cc2540eb):  I2CCFG &= ~I2C_SI;                \
+Hal_i2c.c (components\hal\target\cc2540eb):  while ((I2CCFG & I2C_STO) != 0);  \
+Hal_i2c.c (components\hal\target\cc2540eb):  I2CCFG &= ~I2C_SI;                \
+Hal_i2c.c (components\hal\target\cc2540eb):  while ((I2CCFG & I2C_SI) == 0);   \
+Hal_i2c.c (components\hal\target\cc2540eb):  I2CCFG &= ~I2C_SI;                \
+Hal_i2c.c (components\hal\target\cc2540eb):  while ((I2CCFG & I2C_SI) == 0);   \

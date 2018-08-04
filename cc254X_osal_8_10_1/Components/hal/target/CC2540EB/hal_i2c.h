@@ -1,12 +1,11 @@
 /**************************************************************************************************
-  Filename:       SimpleBLETest.h
-  Revised:        $Date: 2010-08-01 14:03:16 -0700 (Sun, 01 Aug 2010) $
-  Revision:       $Revision: 23256 $
+  Filename:       hal_i2c.h
+  Revised:        $Date: 2012-09-21 06:30:38 -0700 (Fri, 21 Sep 2012) $
+  Revision:       $Revision: 31581 $
 
-  Description:    This file contains the Simple BLE Peripheral sample application
-                  definitions and prototypes.
+  Description:    HAL I2C API for the CC2541ST. It implements the I2C master only.
 
-  Copyright 2010 - 2011 Texas Instruments Incorporated. All rights reserved.
+  Copyright 2012  Texas Instruments Incorporated. All rights reserved.
 
   IMPORTANT: Your use of this Software is limited to those specific rights
   granted under the terms of a software license agreement between the user
@@ -37,52 +36,46 @@
   contact Texas Instruments Incorporated at www.TI.com.
 **************************************************************************************************/
 
-#ifndef SimpleBLETest_H
-#define SimpleBLETest_H
+#ifndef HAL_I2C_H
+#define HAL_I2C_H
 
-#ifdef __cplusplus
-extern "C"
+/* ------------------------------------------------------------------------------------------------
+ *                                          Includes
+ * ------------------------------------------------------------------------------------------------
+ */
+#include "comdef.h"
+
+/* ------------------------------------------------------------------------------------------------
+ *                                          Constants
+ * ------------------------------------------------------------------------------------------------
+ */
+#define HAL_I2C_SLAVE_ADDR_DEF           0x41
+
+/* ------------------------------------------------------------------------------------------------
+ *                                           Typedefs
+ * ------------------------------------------------------------------------------------------------
+ */
+typedef enum
 {
+  i2cClock_123KHZ = 0x00,
+  i2cClock_144KHZ = 0x01,
+  i2cClock_165KHZ = 0x02,
+  i2cClock_197KHZ = 0x03,
+  i2cClock_33KHZ  = 0x80,
+  i2cClock_267KHZ = 0x81,
+  i2cClock_533KHZ = 0x82
+} i2cClock_t;
+
+
+/* ------------------------------------------------------------------------------------------------
+ *                                       Global Functions
+ * ------------------------------------------------------------------------------------------------
+ */
+void     HalI2CInit(uint8 address, i2cClock_t clockRate);
+uint8    HalI2CRead(uint8 len, uint8 *pBuf);
+uint8    HalI2CWrite(uint8 len, uint8 *pBuf);
+void     HalI2CDisable(void);
+
 #endif
-
-/*********************************************************************
- * INCLUDES
+/**************************************************************************************************
  */
-
-/*********************************************************************
- * CONSTANTS
- */
-
-
-// Simple BLE Peripheral Task Events
-#define SBP_START_DEVICE_EVT                              0x0001
-#define SBP_PERIODIC_EVT                                  0x0002
-#define SBP_ADV_IN_CONNECTION_EVT                         0x0004
-#define SBP_PERIODIC_EVT2                                  0x0008
-
-/*********************************************************************
- * MACROS
- */
-
-/*********************************************************************
- * FUNCTIONS
- */
-
-/*
- * Task Initialization for the BLE Application
- */
-extern void SimpleBLETest_Init( uint8 task_id );
-
-/*
- * Task Event Processor for the BLE Application
- */
-extern uint16 SimpleBLETest_ProcessEvent( uint8 task_id, uint16 events );
-
-/*********************************************************************
-*********************************************************************/
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* SimpleBLETest_H */

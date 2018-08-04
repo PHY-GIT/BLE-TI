@@ -1,12 +1,12 @@
 /**************************************************************************************************
-  Filename:       SimpleBLETest.h
-  Revised:        $Date: 2010-08-01 14:03:16 -0700 (Sun, 01 Aug 2010) $
-  Revision:       $Revision: 23256 $
+  Filename:       hal_sensor.h
+  Revised:        $Date: 2013-03-26 07:47:25 -0700 (Tue, 26 Mar 2013) $
+  Revision:       $Revision: 33597 $
 
-  Description:    This file contains the Simple BLE Peripheral sample application
-                  definitions and prototypes.
+  Description:    Interface to sensor driver shared code.
 
-  Copyright 2010 - 2011 Texas Instruments Incorporated. All rights reserved.
+
+  Copyright 2012-2013 Texas Instruments Incorporated. All rights reserved.
 
   IMPORTANT: Your use of this Software is limited to those specific rights
   granted under the terms of a software license agreement between the user
@@ -22,7 +22,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+  PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -37,8 +37,8 @@
   contact Texas Instruments Incorporated at www.TI.com.
 **************************************************************************************************/
 
-#ifndef SimpleBLETest_H
-#define SimpleBLETest_H
+#ifndef HAL_SENSOR_H
+#define HAL_SENSOR_H
 
 #ifdef __cplusplus
 extern "C"
@@ -48,41 +48,29 @@ extern "C"
 /*********************************************************************
  * INCLUDES
  */
+#include "hal_types.h"
 
 /*********************************************************************
- * CONSTANTS
+ * CONSTANTS and MACROS
  */
 
+/* Self test assertion; return FALSE (failed) if condition is not met */
+#define ST_ASSERT(cond) st( if (!(cond)) return FALSE; )
 
-// Simple BLE Peripheral Task Events
-#define SBP_START_DEVICE_EVT                              0x0001
-#define SBP_PERIODIC_EVT                                  0x0002
-#define SBP_ADV_IN_CONNECTION_EVT                         0x0004
-#define SBP_PERIODIC_EVT2                                  0x0008
-
-/*********************************************************************
- * MACROS
- */
+/* Ative delay: 125 cycles ~1 msec */
+#define ST_HAL_DELAY(n) st( { volatile uint32 i; for (i=0; i<(n); i++) { }; } )
 
 /*********************************************************************
  * FUNCTIONS
  */
+void   HalSensorInit(uint8 dev_addr );
+bool   HalSensorReadReg(uint8 addr, uint8 *pBuf, uint8 nBytes);
+bool   HalSensorWriteReg(uint8 addr, uint8 *pBuf, uint8 nBytes);
 
-/*
- * Task Initialization for the BLE Application
- */
-extern void SimpleBLETest_Init( uint8 task_id );
-
-/*
- * Task Event Processor for the BLE Application
- */
-extern uint16 SimpleBLETest_ProcessEvent( uint8 task_id, uint16 events );
-
-/*********************************************************************
-*********************************************************************/
+/*********************************************************************/
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* SimpleBLETest_H */
+#endif /* HAL_SENSOR_H */

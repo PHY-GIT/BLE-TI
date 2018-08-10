@@ -18,14 +18,14 @@
           
           
           
-        <Column0>201</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+        <Column0>218</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
       </Workspace>
       <TerminalIO/>
-    <Debug-Log><ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1380</ColumnWidth1></Debug-Log></Static>
+    </Static>
     <Windows>
       
       
-    <Wnd2>
+    <Wnd0>
         <Tabs>
           <Tab>
             <Identity>TabID-32080-16261</Identity>
@@ -33,9 +33,9 @@
             <Factory>Build</Factory>
             <Session/>
           </Tab>
-        <Tab><Identity>TabID-2155-28658</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs>
+        </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
         <Tabs>
           <Tab>
             <Identity>TabID-10060-16264</Identity>
@@ -43,24 +43,24 @@
             <Factory>Workspace</Factory>
             <Session>
               
-            <NodeDict><ExpandedNode>SimpleBLETest</ExpandedNode><ExpandedNode>SimpleBLETest/HAL</ExpandedNode><ExpandedNode>SimpleBLETest/HAL/Common</ExpandedNode><ExpandedNode>SimpleBLETest/HAL/Target</ExpandedNode><ExpandedNode>SimpleBLETest/HAL/Target/CC2540EB</ExpandedNode><ExpandedNode>SimpleBLETest/HAL/Target/CC2540EB/Config</ExpandedNode><ExpandedNode>SimpleBLETest/HAL/Target/CC2540EB/Drivers</ExpandedNode><ExpandedNode>SimpleBLETest/HAL/Target/CC2540EB/Includes</ExpandedNode><ExpandedNode>SimpleBLETest/NPI</ExpandedNode></NodeDict></Session>
+            <NodeDict><ExpandedNode>SimpleBLETest</ExpandedNode><ExpandedNode>SimpleBLETest/NPI</ExpandedNode></NodeDict></Session>
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd3></Windows>
+      <SelectedTab>0</SelectedTab></Wnd1></Windows>
     <Editor>
       
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\Source\SimpleBLETest_Main.c</Filename><XPos>0</XPos><YPos>67</YPos><SelStart>3663</SelStart><SelEnd>3663</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\Source\SimpleBLETest.c</Filename><XPos>0</XPos><YPos>206</YPos><SelStart>7138</SelStart><SelEnd>7138</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\common\npi\npi_np\npi.h</Filename><XPos>0</XPos><YPos>105</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\common\npi\npi_np\npi.c</Filename><XPos>0</XPos><YPos>6</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\Components\hal\include\hal_uart.h</Filename><XPos>0</XPos><YPos>104</YPos><SelStart>4720</SelStart><SelEnd>4720</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_lcd.c</Filename><XPos>0</XPos><YPos>20</YPos><SelStart>603</SelStart><SelEnd>603</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\Components\hal\target\CC2540EB\_hal_uart_isr.c</Filename><XPos>0</XPos><YPos>233</YPos><SelStart>8409</SelStart><SelEnd>8410</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\Components\hal\target\CC2540EB\_hal_uart_spi.c</Filename><XPos>0</XPos><YPos>54</YPos><SelStart>6964</SelStart><SelEnd>6964</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_i2c.c</Filename><XPos>0</XPos><YPos>139</YPos><SelStart>6343</SelStart><SelEnd>6343</SelEnd></Tab><ActiveTab>8</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\Source\SimpleBLETest_Main.c</Filename><XPos>0</XPos><YPos>109</YPos><SelStart>3590</SelStart><SelEnd>3590</SelEnd></Tab><ActiveTab>0</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\Source\SimpleBLETest.c</Filename><XPos>0</XPos><YPos>35</YPos><SelStart>2727</SelStart><SelEnd>2727</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\common\npi\npi_np\npi.h</Filename><XPos>0</XPos><YPos>105</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\common\npi\npi_np\npi.c</Filename><XPos>0</XPos><YPos>6</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-0097f158><key>iaridepm.enu1</key></Toolbar-0097f158></Sizes></Row0></Top><Left><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>616</Bottom><Right>292</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>234</yscreen><sizeHorzCX>138985</sizeHorzCX><sizeHorzCY>262038</sizeHorzCY><sizeVertCX>204309</sizeVertCX><sizeVertCY>692049</sizeVertCY></Rect></Wnd3></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>232</Bottom><Right>1441</Right><x>-2</x><y>-2</y><xscreen>1443</xscreen><yscreen>234</yscreen><sizeHorzCX>1002780</sizeHorzCX><sizeHorzCY>262038</sizeHorzCY><sizeVertCX>138985</sizeVertCX><sizeVertCY>262038</sizeVertCY></Rect></Wnd2></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-011bf158><key>iaridepm.enu1</key></Toolbar-011bf158></Sizes></Row0></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>667</Bottom><Right>292</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>252</yscreen><sizeHorzCX>138985</sizeHorzCX><sizeHorzCY>261954</sizeHorzCY><sizeVertCX>204309</sizeVertCX><sizeVertCY>695426</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>250</Bottom><Right>1441</Right><x>-2</x><y>-2</y><xscreen>1443</xscreen><yscreen>252</yscreen><sizeHorzCX>1002780</sizeHorzCX><sizeHorzCY>261954</sizeHorzCY><sizeVertCX>138985</sizeVertCX><sizeVertCY>261954</sizeVertCY></Rect></Wnd0></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

@@ -1,5 +1,0 @@
----- performPeriodicTask Matches (4 in 1 files) ----
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):static void performPeriodicTask( void );
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):    performPeriodicTask();
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source): * @fn      performPeriodicTask
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):static void performPeriodicTask( void )

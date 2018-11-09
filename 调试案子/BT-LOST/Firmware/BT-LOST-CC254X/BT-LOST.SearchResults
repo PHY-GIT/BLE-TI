@@ -1,0 +1,4 @@
+---- NpiSerialCallback Matches (3 in 1 files) ----
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):static void NpiSerialCallback( uint8 port, uint8 events );
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):  NPI_InitTransport(NpiSerialCallback);
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):static void NpiSerialCallback( uint8 port, uint8 events )

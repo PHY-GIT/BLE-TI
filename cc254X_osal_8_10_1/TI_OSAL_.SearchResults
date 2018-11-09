@@ -1,4 +1,4 @@
----- NPI_PrintString Matches (3 in 1 files) ----
-SimpleBLETest.c (projects\ble\simpleble\source):  NPI_PrintString("SimpleBLETest_Init2\r\n");  
-SimpleBLETest.c (projects\ble\simpleble\source):  NPI_PrintString("\r\n");  
-SimpleBLETest.c (projects\ble\simpleble\source):  NPI_PrintString("\r\n");  
+---- HCI_SendCommandStatusEvent Matches (2 in 1 files) ----
+
+Hci_event.h (components\ble\hci): * @fn          HCI_SendCommandStatusEvent
+Hci_event.h (components\ble\hci):extern void HCI_SendCommandStatusEvent ( uint8  eventCode,

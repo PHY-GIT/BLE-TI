@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>SimpleBLEPeripheral/CC2541</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>124</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      <PreferedWindows><Position>4</Position><ScreenPosX>61</ScreenPosX><ScreenPosY>295</ScreenPosY><Windows><Window><Factory>SourceBrowser</Factory></Window></Windows></PreferedWindows></Workspace>
+      <Build>
+        
+        
+        
+        
+      <PreferedWindows><Position>4</Position><ScreenPosX>286</ScreenPosX><ScreenPosY>365</ScreenPosY><Windows/></PreferedWindows><ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1035</ColumnWidth1><ColumnWidth2>276</ColumnWidth2><ColumnWidth3>69</ColumnWidth3></Build>
+    <TerminalIO/><Debug-Log><ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1381</ColumnWidth1><PreferedWindows><Position>4</Position><ScreenPosX>155</ScreenPosX><ScreenPosY>307</ScreenPosY><Windows/></PreferedWindows></Debug-Log><Disassembly><MixedMode>1</MixedMode><CodeCovShow>1</CodeCovShow><InstrProfShow>1</InstrProfShow></Disassembly><SourceBrowser><PreferedWindows><Position>4</Position><ScreenPosX>61</ScreenPosX><ScreenPosY>295</ScreenPosY><Windows><Window><Factory>Workspace</Factory></Window></Windows></PreferedWindows></SourceBrowser><Tool-Output><PreferedWindows><Position>4</Position><ScreenPosX>146</ScreenPosX><ScreenPosY>276</ScreenPosY><Windows><Window><Factory>Workspace</Factory></Window><Window><Factory>SourceBrowser</Factory></Window><Window><Factory>Build</Factory></Window><Window><Factory>Debug-Log</Factory></Window><Window><Factory>Breakpoints</Factory></Window><Window><Factory>Find-in-Files</Factory></Window></Windows></PreferedWindows></Tool-Output><Find-in-Files><PreferedWindows><Position>4</Position><ScreenPosX>146</ScreenPosX><ScreenPosY>276</ScreenPosY><Windows><Window><Factory>Workspace</Factory></Window><Window><Factory>SourceBrowser</Factory></Window><Window><Factory>Build</Factory></Window><Window><Factory>Debug-Log</Factory></Window><Window><Factory>Breakpoints</Factory></Window><Window><Factory>Tool-Output</Factory></Window></Windows></PreferedWindows><ColumnWidth0>1623</ColumnWidth0><ColumnWidth1>231</ColumnWidth1><ColumnWidth2>2783</ColumnWidth2></Find-in-Files><Breakpoints><PreferedWindows><Position>4</Position><ScreenPosX>155</ScreenPosX><ScreenPosY>307</ScreenPosY><Windows/></PreferedWindows></Breakpoints></Static>
+    <Windows>
+      
+      
+    <Wnd0><Tabs><Tab><Identity>TabID-28900-16247</Identity><TabName>Find in Files</TabName><Factory>Find-in-Files</Factory><Session/></Tab><Tab><Identity>TabID-5835-16270</Identity><TabName>Workspace</TabName><Factory>Workspace</Factory><Session><NodeDict><ExpandedNode>SimpleBLEPeripheral</ExpandedNode><ExpandedNode>SimpleBLEPeripheral/HAL</ExpandedNode><ExpandedNode>SimpleBLEPeripheral/HAL/Target</ExpandedNode><ExpandedNode>SimpleBLEPeripheral/INCLUDE</ExpandedNode></NodeDict></Session></Tab></Tabs><SelectedTab>1</SelectedTab></Wnd0><Wnd1><Tabs><Tab><Identity>TabID-13969-16322</Identity><TabName>Build</TabName><Factory>Build</Factory><Session/></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd1></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\Components\ble\include\att.h</Filename><XPos>0</XPos><YPos>84</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\Source\SimpleBLEPeripheral_Main.c</Filename><XPos>0</XPos><YPos>63</YPos><SelStart>3611</SelStart><SelEnd>3611</SelEnd></Tab><ActiveTab>1</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_lcd.c</Filename><XPos>0</XPos><YPos>735</YPos><SelStart>33459</SelStart><SelEnd>33459</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\Source\simpleBLEPeripheral.c</Filename><XPos>0</XPos><YPos>832</YPos><SelStart>26886</SelStart><SelEnd>26886</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-001df200><key>iaridepm.enu1</key></Toolbar-001df200></Sizes></Row0><Row1><Sizes><Toolbar-090c2d18><key>debuggergui.enu1</key></Toolbar-090c2d18></Sizes></Row1></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>561</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>135685</sizeHorzCX><sizeHorzCY>248756</sizeHorzCY><sizeVertCX>135685</sizeVertCX><sizeVertCY>700249</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>1476</Right><x>-2</x><y>-2</y><xscreen>1478</xscreen><yscreen>200</yscreen><sizeHorzCX>1002714</sizeHorzCX><sizeHorzCY>248756</sizeHorzCY><sizeVertCX>135685</sizeVertCX><sizeVertCY>248756</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+

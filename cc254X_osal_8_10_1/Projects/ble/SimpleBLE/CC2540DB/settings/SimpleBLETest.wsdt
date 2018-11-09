@@ -25,7 +25,7 @@
     <Windows>
       
       
-    <Wnd0>
+    <Wnd2>
         <Tabs>
           <Tab>
             <Identity>TabID-32080-16261</Identity>
@@ -35,7 +35,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
         <Tabs>
           <Tab>
             <Identity>TabID-10060-16264</Identity>
@@ -47,20 +47,20 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd1></Windows>
+      <SelectedTab>0</SelectedTab></Wnd3></Windows>
     <Editor>
       
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\Source\SimpleBLETest_Main.c</Filename><XPos>0</XPos><YPos>109</YPos><SelStart>3590</SelStart><SelEnd>3590</SelEnd></Tab><ActiveTab>0</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\Source\SimpleBLETest.c</Filename><XPos>0</XPos><YPos>35</YPos><SelStart>2727</SelStart><SelEnd>2727</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\common\npi\npi_np\npi.h</Filename><XPos>0</XPos><YPos>105</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\common\npi\npi_np\npi.c</Filename><XPos>0</XPos><YPos>6</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\Source\SimpleBLETest_Main.c</Filename><XPos>0</XPos><YPos>66</YPos><SelStart>3663</SelStart><SelEnd>3663</SelEnd></Tab><ActiveTab>0</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\Source\SimpleBLETest.c</Filename><XPos>0</XPos><YPos>35</YPos><SelStart>2727</SelStart><SelEnd>2727</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\common\npi\npi_np\npi.h</Filename><XPos>0</XPos><YPos>105</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\common\npi\npi_np\npi.c</Filename><XPos>0</XPos><YPos>6</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-011bf158><key>iaridepm.enu1</key></Toolbar-011bf158></Sizes></Row0></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>667</Bottom><Right>292</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>252</yscreen><sizeHorzCX>138985</sizeHorzCX><sizeHorzCY>261954</sizeHorzCY><sizeVertCX>204309</sizeVertCX><sizeVertCY>695426</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>250</Bottom><Right>1441</Right><x>-2</x><y>-2</y><xscreen>1443</xscreen><yscreen>252</yscreen><sizeHorzCX>1002780</sizeHorzCX><sizeHorzCY>261954</sizeHorzCY><sizeVertCX>138985</sizeVertCX><sizeVertCY>261954</sizeVertCY></Rect></Wnd0></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-011bf158><key>iaridepm.enu1</key></Toolbar-011bf158></Sizes></Row0><Row1><Sizes/></Row1><Row2><Sizes/></Row2></Top><Left><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>667</Bottom><Right>292</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>252</yscreen><sizeHorzCX>138985</sizeHorzCX><sizeHorzCY>261954</sizeHorzCY><sizeVertCX>204309</sizeVertCX><sizeVertCY>695426</sizeVertCY></Rect></Wnd3></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>250</Bottom><Right>1441</Right><x>-2</x><y>-2</y><xscreen>1443</xscreen><yscreen>252</yscreen><sizeHorzCX>1002780</sizeHorzCX><sizeHorzCY>261954</sizeHorzCY><sizeVertCX>138985</sizeVertCX><sizeVertCY>261954</sizeVertCY></Rect></Wnd2></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

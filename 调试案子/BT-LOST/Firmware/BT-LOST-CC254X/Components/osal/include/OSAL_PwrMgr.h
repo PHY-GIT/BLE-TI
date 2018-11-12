@@ -72,8 +72,8 @@ typedef struct
  * device is most likely on mains power. The PWRMGR_BATTERY selection allows
  * the HAL sleep manager to enter SLEEP LITE state or SLEEP DEEP state.
  */
-#define PWRMGR_ALWAYS_ON  0
-#define PWRMGR_BATTERY    1
+#define PWRMGR_ALWAYS_ON  0  //正常供电
+#define PWRMGR_BATTERY    1  //电池供电 
 
 /* The PWRMGR_CONSERVE selection turns power savings on, all tasks have to
  * agree. The PWRMGR_HOLD selection turns power savings off.

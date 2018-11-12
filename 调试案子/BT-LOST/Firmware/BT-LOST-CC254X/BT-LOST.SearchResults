@@ -1,4 +1,8 @@
----- NpiSerialCallback Matches (3 in 1 files) ----
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):static void NpiSerialCallback( uint8 port, uint8 events );
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):  NPI_InitTransport(NpiSerialCallback);
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):static void NpiSerialCallback( uint8 port, uint8 events )
+---- HAL_KEY_SW_6 Matches (7 in 4 files) ----
+Hal_key.c (components\hal\target\cc2540eb):    keys |= HAL_KEY_SW_6;
+Hal_key.c (components\hal\target\cc2540eb):    keys |= HAL_KEY_SW_6;
+Hal_key.h (components\hal\include):#define HAL_KEY_SW_6 0x20  // Button S1 if available
+OnBoard.c (projects\ble\common\cc2540):  shift = (OnboardKeyIntEnable == HAL_KEY_INTERRUPT_ENABLE) ? false : ((keys & HAL_KEY_SW_6) ? true : false);
+OnBoard.c (projects\ble\common\cc2540):    if ( keys & HAL_KEY_SW_6 )  // Switch 6
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):  if ( keys & HAL_KEY_SW_6 )
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):    HalLcdWriteString( "HAL_KEY_SW_6", HAL_LCD_LINE_5 );

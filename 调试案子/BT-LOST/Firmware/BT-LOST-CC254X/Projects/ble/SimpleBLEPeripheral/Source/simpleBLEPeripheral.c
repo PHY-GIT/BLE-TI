@@ -98,7 +98,7 @@
  */
 
 // How often to perform periodic event
-#define SBP_PERIODIC_EVT_PERIOD                   1000
+#define SBP_PERIODIC_EVT_PERIOD               1000  //1000ms
 
 // What is the advertising interval when device is discoverable (units of 625us, 160=100ms)
 #define DEFAULT_ADVERTISING_INTERVAL          160
@@ -112,11 +112,20 @@
 #define DEFAULT_DISCOVERABLE_MODE             GAP_ADTYPE_FLAGS_GENERAL
 #endif  // defined ( CC2540_MINIDK )
 
+#if defined (POWER_SAVING)// 注意， 如果开启了睡眠功能， led灯就不会正常工作了， 并且连接间隔需要设较大， 才会省电
 // Minimum connection interval (units of 1.25ms, 80=100ms) if automatic parameter update request is enabled
-#define DEFAULT_DESIRED_MIN_CONN_INTERVAL     80
+#define DEFAULT_DESIRED_MIN_CONN_INTERVAL     40//  连接间隔与数据发送量有关， 连接间隔越短， 单位时间内就能发送越多的数据
 
 // Maximum connection interval (units of 1.25ms, 800=1000ms) if automatic parameter update request is enabled
-#define DEFAULT_DESIRED_MAX_CONN_INTERVAL     800
+#define DEFAULT_DESIRED_MAX_CONN_INTERVAL     400//  连接间隔与数据发送量有关， 连接间隔越短， 单位时间内就能发送越多的数据
+#else
+// Minimum connection interval (units of 1.25ms, 80=100ms) if automatic parameter update request is enabled
+#define DEFAULT_DESIRED_MIN_CONN_INTERVAL     8//  连接间隔与数据发送量有关， 连接间隔越短， 单位时间内就能发送越多的数据
+
+// Maximum connection interval (units of 1.25ms, 800=1000ms) if automatic parameter update request is enabled
+#define DEFAULT_DESIRED_MAX_CONN_INTERVAL     8//  连接间隔与数据发送量有关， 连接间隔越短， 单位时间内就能发送越多的数据
+#endif
+
 
 // Slave latency to use if automatic parameter update request is enabled
 #define DEFAULT_DESIRED_SLAVE_LATENCY         0
@@ -142,6 +151,10 @@
   #define ADV_IN_CONN_WAIT                    500 // delay 500 ms
 #endif
 
+#if 1
+//延时函数
+extern void simpleBLE_Delay_1ms(int times);   
+#endif
 
 //功率配置，默认0dbm
 #define LL_EXT_TX_POWER_MINUS_23_DBM                   0 // -23dbm  功率 最小
@@ -286,7 +299,7 @@ static uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "LOST-BLE";
  */
 static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg );
 static void peripheralStateNotificationCB( gaprole_States_t newState );
-static void performPeriodicTask( void );
+//static void performPeriodicTask( void );
 static void simpleProfileChangeCB( uint8 paramID );
 
 #if defined( CC2540_MINIDK )
@@ -330,6 +343,7 @@ static simpleProfileCBs_t simpleBLEPeripheral_SimpleProfileCBs =
 static void NpiSerialCallback( uint8 port, uint8 events );
 #endif
 
+
 /*********************************************************************
  * PUBLIC FUNCTIONS
  */
@@ -357,7 +371,7 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   
   // Setup the GAP Peripheral Role Profile
   {
-    #if defined( CC2540_MINIDK )
+    #if 0//defined( CC2540_MINIDK )
       // For the CC2540DK-MINI keyfob, device doesn't start advertising until button is pressed
       uint8 initial_advertising_enable = FALSE;
     #else
@@ -461,7 +475,7 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   // Setup a delayed profile startup
   osal_set_event( simpleBLEPeripheral_TaskID, SBP_START_DEVICE_EVT );
 
-#if 1   //修改发射功率
+#if 0//   //修改发射功率
 	HCI_EXT_SetTxPowerCmd(LL_EXT_TX_POWER_4_DBM);
 #endif
 }
@@ -485,6 +499,14 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
 {
 
   VOID task_id; // OSAL required parameter that isn't used in this function
+
+#if 1
+  uint8 pktBuffer[4];
+  pktBuffer[0] = 0x12;
+  pktBuffer[1] = 0x34;
+  pktBuffer[2] = 0x56;
+  pktBuffer[3] = 0x78;
+#endif
 
   if ( events & SYS_EVENT_MSG )
   {
@@ -516,7 +538,7 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
 
     return ( events ^ SBP_START_DEVICE_EVT );
   }
-
+#if 1
   if ( events & SBP_PERIODIC_EVT )
   {
     // Restart timer
@@ -527,10 +549,14 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
 
     // Perform periodic application task
     //performPeriodicTask();
-
+    if(gapProfileState == GAPROLE_CONNECTED)
+    {
+        bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+    }
+    
     return (events ^ SBP_PERIODIC_EVT);
   }
-
+#endif
   // Discard unknown events
   return 0;
 }
@@ -563,38 +589,62 @@ static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg )
     break;
   }
 }
+uint8 gTxPower = LL_EXT_TX_POWER_0_DBM;
+
+//static uint8 GAPRole_flag=TRUE;  
+//static uint8 old_GAPRole_flag=TRUE;  
 
 static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 {
   (void)shift;  // Intentionally unreferenced parameter
-
-    uint8 pktBuffer[5];
-    pktBuffer[0] = 0x33;
-    pktBuffer[1] = 0x36;
-    pktBuffer[2] = 0x55;
-	pktBuffer[3] = 0x50;
 
   HalLcdWriteStringValue( "key = 0x", keys, 16, HAL_LCD_LINE_5 );
 
   // smartRF开发板上的S1 对应我们源码上的HAL_KEY_SW_6
   if ( keys & HAL_KEY_SW_6 )
   {
-     // 发送数据到主机
-    if(gapProfileState == GAPROLE_CONNECTED)
-    {
-        bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
-    }
-  
-    HalLcdWriteString( "HAL_KEY_SW_6", HAL_LCD_LINE_6 );
+    
+    HalLcdWriteString( "HAL_KEY_SW_6", HAL_LCD_LINE_5 );
   }
 
   if ( keys & HAL_KEY_UP )
-  {  
+  { 
+#if 0  
+      if(gTxPower < LL_EXT_TX_POWER_4_DBM)
+      {
+          gTxPower++;   //功率提高一档
+          HCI_EXT_SetTxPowerCmd(gTxPower);
+      
+          HalLcdWriteStringValue( "TxPower: ", gTxPower, 10, HAL_LCD_LINE_7 );
+      }
+#endif
     HalLcdWriteString( "HAL_KEY_UP", HAL_LCD_LINE_6 );
   }
 
   if ( keys & HAL_KEY_LEFT )
   {
+
+    if(GAPRole_flag == TRUE)
+    {
+       // bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+       GAPRole_TerminateConnection();  // 终止连接
+       simpleBLE_Delay_1ms(100);
+       GAPRole_flag =FALSE;
+       old_GAPRole_flag =FALSE;
+       GAPRole_SetParameter( GAPROLE_ADVERT_ENABLED, sizeof( uint8 ), &GAPRole_flag );
+    }else
+    {
+        if(old_GAPRole_flag ==FALSE){
+            GAPRole_flag =TRUE;
+           // old_GAPRole_flag =GAPRole_flag;
+            GAPRole_SetParameter( GAPROLE_ADVERT_ENABLED, sizeof( uint8 ), &GAPRole_flag );
+        }
+       
+       // 终止连接后， 需要复位从机
+       //HAL_SYSTEM_RESET();
+    }
+
+  
     HalLcdWriteString( "HAL_KEY_LEFT", HAL_LCD_LINE_6 );
   }
 
@@ -611,6 +661,15 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
   
   if ( keys & HAL_KEY_DOWN )
   {
+#if 0  
+    if(gTxPower > LL_EXT_TX_POWER_MINUS_23_DBM)
+    {
+        gTxPower--; //功率降低一档
+        HCI_EXT_SetTxPowerCmd(gTxPower);
+        
+        HalLcdWriteStringValue( "TxPower: ", gTxPower, 10, HAL_LCD_LINE_7 );
+    } 
+#endif    
     HalLcdWriteString( "HAL_KEY_DOWN", HAL_LCD_LINE_6 );
   }
   
@@ -734,6 +793,7 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
  *
  * @return  none
  */
+#if 0
 static void performPeriodicTask( void )
 {
 #if 0    
@@ -772,7 +832,7 @@ static void performPeriodicTask( void )
     GAP_UpdateAdvertisingData( simpleBLEPeripheral_TaskID, TRUE, sizeof( advertData_Ex ), advertData_Ex );
 #endif
 }
-
+#endif
 /*********************************************************************
  * @fn      simpleProfileChangeCB
  *

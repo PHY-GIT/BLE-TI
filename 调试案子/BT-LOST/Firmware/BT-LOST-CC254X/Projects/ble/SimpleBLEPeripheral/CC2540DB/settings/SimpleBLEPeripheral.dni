@@ -1,5 +1,5 @@
 [DebugChecksum]
-Checksum=1347141857
+Checksum=-1848367746
 [DisAssemblyWindow]
 NumStates=_ 1
 State 1=_ 1
@@ -31,5 +31,7 @@ LoggingEnabled=_ 0
 LogFile=_ ""
 [Aliases]
 A0=_ "C:\Users\Administrator\Desktop\BT-LOST\BLE-CC254x-dynamic-adv\Projects\ble\SimpleBLEPeripheral\Source\SimpleBLEPeripheral_Main.c" ""
-Count=1
+A1=_ "F:\PHY_GIT\BLE-TI\调试案子\BT-LOST\BT-LOST-CC254X\Components\hal\target\CC2540EB\hal_startup.c" ""
+A2=_ "F:\PHY_GIT\BLE-TI\调试案子\BT-LOST\BT-LOST-CC254X\Projects\ble\SimpleBLEPeripheral\Source\SimpleBLEPeripheral_Main.c" ""
+Count=3
 SuppressDialog=1

@@ -214,7 +214,7 @@ static bool halSleepInt = FALSE;
  */
 
 // PCON register value to program when setting power mode
-volatile __data uint8 halSleepPconValue = PCON_IDLE;
+volatile __data uint8 halSleepPconValue = HAL_SLEEP_TIMER;//PCON_IDLE;
 
 /*******************************************************************************
  * Prototypes

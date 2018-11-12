@@ -143,6 +143,12 @@
 #endif
 
 
+//功率配置，默认0dbm
+#define LL_EXT_TX_POWER_MINUS_23_DBM                   0 // -23dbm  功率 最小
+#define LL_EXT_TX_POWER_MINUS_6_DBM                    1 // -6dbm   
+#define LL_EXT_TX_POWER_0_DBM                          2  // 0dbm   
+#define LL_EXT_TX_POWER_4_DBM                          3  // +dbm  功率 最大 
+
 /*********************************************************************
  * TYPEDEFS
  */
@@ -454,6 +460,10 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   
   // Setup a delayed profile startup
   osal_set_event( simpleBLEPeripheral_TaskID, SBP_START_DEVICE_EVT );
+
+#if 1   //修改发射功率
+	HCI_EXT_SetTxPowerCmd(LL_EXT_TX_POWER_4_DBM);
+#endif
 }
 
 
@@ -558,21 +568,11 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 {
   (void)shift;  // Intentionally unreferenced parameter
 
-    //uint8 pktBuffer[5];
-    //osal_memset( pktBuffer, 0, sizeof( pktBuffer ) );
-    uint16 numBytes =0;
-
-    //pktBuffer[0] =0x33;
-    //pktBuffer[1] =0x44;
-    //pktBuffer[2] =0x42;
-    //pktBuffer[3] =0x23;
-    //pktBuffer[4] =0x14;
-
     uint8 pktBuffer[5];
     pktBuffer[0] = 0x33;
     pktBuffer[1] = 0x36;
-    
-   // bt_to_app(buf,sizeof(buf));
+    pktBuffer[2] = 0x55;
+	pktBuffer[3] = 0x50;
 
   HalLcdWriteStringValue( "key = 0x", keys, 16, HAL_LCD_LINE_5 );
 
@@ -582,13 +582,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
      // 发送数据到主机
     if(gapProfileState == GAPROLE_CONNECTED)
     {
-       // NPI_PrintString("BT_LOST INIT\r\n");  
-        //numBytes = sizeof(pktBuffer) / sizeof(pktBuffer[0]);
-        numBytes = sizeof(pktBuffer);
-        if(numBytes > 19)
-            numBytes = 19;
-        //ble_printf("-", numBytes, 16);
-        simpleBLE_SendData(pktBuffer, numBytes);
+        bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     }
   
     HalLcdWriteString( "HAL_KEY_SW_6", HAL_LCD_LINE_6 );
@@ -923,7 +917,6 @@ void bt_to_app(uint8 *buf,uint8 len)
    {
       // NPI_PrintString("BT_LOST INIT\r\n");  
        //numBytes = sizeof(pktBuffer) / sizeof(pktBuffer[0]);
-       len = sizeof(buf);
        if(len > 19){
 #if PRINTF_DEBUG        
            NPI_PrintString("send len err \n");    //长度错误
@@ -946,7 +939,9 @@ void bt_to_app(uint8 *buf,uint8 len)
 void simpleBLE_SendData(uint8* buffer, uint8 sendBytes)
 {
 #if PRINTF_DEBUG   //打印发送
-     NPI_PrintString("bt to app:\n");
+     NPI_PrintString("FFF2-bt to app:\n");
+     NPI_PrintValue("FFF2-len", sendBytes, 16);
+	 NPI_PrintString("\n");
      for (uint8 i = 0;i <sendBytes;i++) {
          NPI_PrintValue("", buffer[i], 16);
      }

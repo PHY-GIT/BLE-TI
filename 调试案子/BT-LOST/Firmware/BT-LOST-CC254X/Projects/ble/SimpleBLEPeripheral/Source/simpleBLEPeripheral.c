@@ -591,8 +591,8 @@ static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg )
 }
 uint8 gTxPower = LL_EXT_TX_POWER_0_DBM;
 
-//static uint8 GAPRole_flag=TRUE;  
-//static uint8 old_GAPRole_flag=TRUE;  
+static uint8 GAPRole_flag=TRUE;  
+static uint8 old_GAPRole_flag=TRUE;  
 
 static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 {

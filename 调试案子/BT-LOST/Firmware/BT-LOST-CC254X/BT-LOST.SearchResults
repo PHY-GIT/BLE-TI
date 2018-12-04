@@ -1,14 +1,4 @@
----- RSSI_READ_EVT Matches (13 in 3 files) ----
-Central.c (projects\ble\profiles\roles):#define RSSI_READ_EVT                 0x0002
-Peripheral.c (projects\ble\profiles\roles):#define RSSI_READ_EVT                 0x0002  // Read RSSI
-Peripheral.c (projects\ble\profiles\roles):          VOID osal_start_timerEx( gapRole_TaskID, RSSI_READ_EVT, gapRole_RSSIReadRate );
-Peripheral.c (projects\ble\profiles\roles):  if ( events & RSSI_READ_EVT )
-Peripheral.c (projects\ble\profiles\roles):        VOID osal_start_timerEx( gapRole_TaskID, RSSI_READ_EVT, gapRole_RSSIReadRate );
-Peripheral.c (projects\ble\profiles\roles):    return ( events ^ RSSI_READ_EVT );
-Peripheral.c (projects\ble\profiles\roles):            VOID osal_start_timerEx( gapRole_TaskID, RSSI_READ_EVT, gapRole_RSSIReadRate );
-peripheralBroadcaster.c (projects\ble\profiles\roles):#define RSSI_READ_EVT                 0x0002
-peripheralBroadcaster.c (projects\ble\profiles\roles):          VOID osal_start_timerEx( gapRole_TaskID, RSSI_READ_EVT, gapRole_RSSIReadRate );
-peripheralBroadcaster.c (projects\ble\profiles\roles):  if ( events & RSSI_READ_EVT )
-peripheralBroadcaster.c (projects\ble\profiles\roles):        VOID osal_start_timerEx( gapRole_TaskID, RSSI_READ_EVT, gapRole_RSSIReadRate );
-peripheralBroadcaster.c (projects\ble\profiles\roles):    return ( events ^ RSSI_READ_EVT );
-peripheralBroadcaster.c (projects\ble\profiles\roles):            VOID osal_start_timerEx( gapRole_TaskID, RSSI_READ_EVT, gapRole_RSSIReadRate );
+---- advertData Matches (4 in 2 files) ----
+Gap.h (components\ble\include):   * @param       dataLen - Octet length of advertData
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):static uint8 advertData[] =
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):    GAPRole_SetParameter( GAPROLE_ADVERT_DATA, sizeof( advertData ), advertData );

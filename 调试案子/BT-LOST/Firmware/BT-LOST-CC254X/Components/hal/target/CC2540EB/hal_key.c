@@ -22,7 +22,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+  PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -298,6 +298,7 @@ static halKeyCBack_t pHalKeyProcessFunction;
 static uint8 HalKeyConfigured;
 bool Hal_KeyIntEnable;            /* interrupt enable/disable flag */
 
+
 /**************************************************************************************************
  *                                        FUNCTIONS - Local
  **************************************************************************************************/
@@ -351,11 +352,12 @@ void HalKeyInit( void )
   HAL_KEY_SW_7_SEL &= ~(HAL_KEY_SW_7_BIT);    /* Set pin function to GPIO */
   HAL_KEY_SW_7_DIR &= ~(HAL_KEY_SW_7_BIT);    /* Set pin direction to Input */
 
-
+#if 0
   HAL_KEY_JOY_MOVE_SEL &= ~(HAL_KEY_JOY_MOVE_BIT); /* Set pin function to GPIO */
   HAL_KEY_JOY_MOVE_DIR &= ~(HAL_KEY_JOY_MOVE_BIT); /* Set pin direction to Input */
 
   P2INP |= PUSH2_BV;  /* Configure GPIO tri-state. */
+#endif
 #endif
 
   /* Initialize callback function */
@@ -432,6 +434,7 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
     HAL_KEY_SW_7_PXIFG = ~(HAL_KEY_SW_7_BIT);
 
     /* Rising/Falling edge configuratinn */
+#if 0
 
     HAL_KEY_JOY_MOVE_ICTL &= ~(HAL_KEY_JOY_MOVE_EDGEBIT);    /* Clear the edge bit */
     /* For falling edge, the bit must be set. */
@@ -448,6 +451,7 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
     HAL_KEY_JOY_MOVE_ICTL |= HAL_KEY_JOY_MOVE_ICTLBIT;
     HAL_KEY_JOY_MOVE_IEN |= HAL_KEY_JOY_MOVE_IENBIT;
     HAL_KEY_JOY_MOVE_PXIFG = ~(HAL_KEY_JOY_MOVE_BIT);
+#endif
 #endif // !CC2540_MINIDK
 
     /* Do this only after the hal_key is configured - to work with sleep stuff */
@@ -545,12 +549,15 @@ uint8 HalKeyRead ( void )
   {
     keys |= HAL_KEY_SW_7;
   }	
+#if 0
 
   if ((HAL_KEY_JOY_MOVE_PORT & HAL_KEY_JOY_MOVE_BIT))  /* Key is active low */
   {
-   keys =0;
-    //keys |= halGetJoyKeyInput();
+     keys =0;
+    //keys |= 
+        halGetJoyKeyInput();
   }
+#endif  
 #endif
   return keys;
 }
@@ -607,11 +614,14 @@ void HalKeyPoll (void)
   {
     keys |= HAL_KEY_SW_7;
   }
+#if 0 
   if ((HAL_KEY_JOY_MOVE_PORT & HAL_KEY_JOY_MOVE_BIT))  /* Key is active HIGH */
   {
   		keys =0;
-    /////keys = halGetJoyKeyInput();adkey
+    /////keys = 
+    halGetJoyKeyInput();//adkey
   }
+#endif  
 #endif
 
   /* If interrupts are not enabled, previous key status and current key status
@@ -672,9 +682,8 @@ uint8 halGetJoyKeyInput(void)
   do
   {
     ksave1 = ksave0;    /* save previouse key reading */
-
+    HalAdcSetReference( HAL_ADC_REF_AVDD );
     adc = HalAdcRead (HAL_KEY_JOY_CHN, HAL_ADC_RESOLUTION_8);
-
     if ((adc >= 2) && (adc <= 38))
     {
        ksave0 |= HAL_KEY_UP;
@@ -695,7 +704,8 @@ uint8 halGetJoyKeyInput(void)
     {
       ksave0 |= HAL_KEY_CENTER;
     }
-  } while (ksave0 != ksave1);
+  }
+  while (ksave0 != ksave1);
 
   return ksave0;
 }
@@ -765,12 +775,13 @@ void halProcessKeyInterrupt (void)
     valid = TRUE;
   }
 
-  
+#if 0  
   if (HAL_KEY_JOY_MOVE_PXIFG & HAL_KEY_JOY_MOVE_BIT)  /* Interrupt Flag has been set */
   {
     HAL_KEY_JOY_MOVE_PXIFG = ~(HAL_KEY_JOY_MOVE_BIT); /* Clear Interrupt Flag */
     valid = TRUE;
   }
+#endif  
 #endif
   if (valid)
   {
@@ -885,6 +896,7 @@ HAL_ISR_FUNCTION( halKeyPort0Isr, P0INT_VECTOR )
 HAL_ISR_FUNCTION( halKeyPort2Isr, P2INT_VECTOR )
 {
   HAL_ENTER_ISR();
+#if 0  
 
   if (HAL_KEY_JOY_MOVE_PXIFG & HAL_KEY_JOY_MOVE_BIT)
   {
@@ -898,7 +910,7 @@ HAL_ISR_FUNCTION( halKeyPort2Isr, P2INT_VECTOR )
   */
   HAL_KEY_JOY_MOVE_PXIFG = 0;
   HAL_KEY_CPU_PORT_2_IF = 0;
-
+#endif
   CLEAR_SLEEP_MODE();
 
   HAL_EXIT_ISR();

@@ -95,8 +95,9 @@
 
 #define  USER_RSSI_EN             1          //rssi
 #define  SEND_RSSI_EN             0          //发送距离
+#define  BAT_DET_EN               1          //外部电池检测
 
-  
+
 /*********************************************************************
  * MACROS
  */
@@ -164,6 +165,9 @@
 extern void simpleBLE_Delay_1ms(int times);   
 #endif
 
+#if BAT_DET_EN
+static uint8 bat_sta=0;  //0正常  1:低电   
+#endif
 //功率配置，默认0dbm
 #define LL_EXT_TX_POWER_MINUS_23_DBM                   0 // -23dbm  功率 最小
 #define LL_EXT_TX_POWER_MINUS_6_DBM                    1 // -6dbm   
@@ -198,17 +202,17 @@ static uint8 scanRspData[] =
 {
 
 #if 1  
- // complete name
- 0x09,   // length of this data
- GAP_ADTYPE_LOCAL_NAME_COMPLETE,
- 'L',
- 'O',
- 'S',
- 'T',
- '-',
- 'B',
- 'L',
- 'E',
+    // complete name
+    0x09,   // length of this data
+    GAP_ADTYPE_LOCAL_NAME_COMPLETE,
+    'L',
+    'O',
+    'S',
+    'T',
+    '-',
+    'B',
+    'L',
+    'E',
 #else
       // complete name
   0x14,   // length of this data
@@ -516,14 +520,6 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
 
   VOID task_id; // OSAL required parameter that isn't used in this function
 
-#if 0
-  uint8 pktBuffer[4];
-  pktBuffer[0] = 0x12;
-  pktBuffer[1] = 0x34;
-  pktBuffer[2] = 0x56;
-  pktBuffer[3] = 0x78;
-#endif
-
   if ( events & SYS_EVENT_MSG )
   {
     uint8 *pMsg;
@@ -554,28 +550,87 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
 
     return ( events ^ SBP_START_DEVICE_EVT );
   }
-#if 1
+
   if ( events & SBP_PERIODIC_EVT )
   {
+     
+#if BAT_DET_EN
+     uint8 adc;
+
+     HalAdcSetReference( HAL_ADC_REF_AVDD );
+     adc = HalAdcRead( HAL_ADC_CHANNEL_7, HAL_ADC_RESOLUTION_8 );  //1s
+     
+     task_battery_check(adc);
+#endif
+    
     // Restart timer
     if ( SBP_PERIODIC_EVT_PERIOD )
     {
+    
       osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT, SBP_PERIODIC_EVT_PERIOD );
     }
 
     // Perform periodic application task
     //performPeriodicTask();
-    if(gapProfileState == GAPROLE_CONNECTED)
-    {
-       // bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
-    }
+    //if(gapProfileState == GAPROLE_CONNECTED)
+    //{
+    //    pktBuffer[1] =adc;
+    //    bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+    //}
     
     return (events ^ SBP_PERIODIC_EVT);
   }
-#endif
+
   // Discard unknown events
   return 0;
 }
+
+#if BAT_DET_EN
+void task_battery_check(uint8 bat_vol)
+{
+    uint8 pktBuffer[3];
+    static uint8 bat_cnt=0;
+    static uint8 warning_cnt=0;
+    pktBuffer[0] = 0x00;pktBuffer[1] = 0x00;pktBuffer[2] = 0x00;
+
+    if((bat_vol <= 0x33)){   //2.9v
+        if(bat_cnt < 5){
+            bat_cnt++;
+        }else if(bat_cnt == 5){   //5s
+            bat_cnt = 10;
+            warning_cnt =0;
+            if(gapProfileState == GAPROLE_CONNECTED)
+            {
+                pktBuffer[0] = 0x50;
+                pktBuffer[1] = 0x01;
+                pktBuffer[2] = 0x51;
+                bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+                bat_sta =1;   //低电
+            }
+        }
+    }else{
+        bat_sta =0;
+        bat_cnt =0;
+        warning_cnt =0;
+    }
+
+
+    if((++warning_cnt >=30)&&(bat_sta ==1)){   //30s一次
+        pktBuffer[0] = 0x50;
+        pktBuffer[1] = 0x01;
+        pktBuffer[2] = 0x51;
+        if(gapProfileState == GAPROLE_CONNECTED)
+        {
+            bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+        }
+        warning_cnt =0;
+    }
+
+    
+}
+#endif
+
+
 
 /*********************************************************************
  * @fn      simpleBLEPeripheral_ProcessOSALMsg
@@ -617,6 +672,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 
   uint8 pktBuffer[3];
 
+  pktBuffer[0] = 0x00;pktBuffer[1] = 0x00;pktBuffer[2] = 0x00;
 
   HalLcdWriteStringValue( "key = 0x", keys, 16, HAL_LCD_LINE_5 );
   if ( keys & HAL_KEY_SW_1 )
@@ -789,6 +845,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
  */
 static void peripheralStateNotificationCB( gaprole_States_t newState )
 {
+
   switch ( newState )
   {
     case GAPROLE_STARTED:    //初始化
@@ -1199,12 +1256,12 @@ static int dist_filer(int dist)
 void simpleBle_SetRssi(int8 rssi)
 {
 #if SEND_RSSI_EN
-    uint8 pktBuffer[4];   //buf
-	uint8 dist_h=0;       //高位   单位cm
-	uint8 dist_l=0;       //低位   
+    uint8 pktBuffer[4];      //buf
+	uint8 dist_h=0;          //高位   单位cm
+	uint8 dist_l=0;          //低位   
 	uint16 temp_dist =0;     //temp变量，平均值  
 
-    pktBuffer[0] = 0x50;   //头
+    pktBuffer[0] = 0x60;   //头
 #endif
     if(gapProfileState == GAPROLE_CONNECTED)
     {
@@ -1228,7 +1285,7 @@ void simpleBle_SetRssi(int8 rssi)
 		
    		pktBuffer[1] =dist_h; 
 		pktBuffer[2] =dist_l; 
-		pktBuffer[3] = 0x55;   //尾
+		pktBuffer[3] = 0x66;   //尾
 		bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
 #endif
 #if (defined HAL_LCD) && (HAL_LCD == TRUE) 		

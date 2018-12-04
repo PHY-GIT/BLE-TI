@@ -87,7 +87,9 @@ void simpleBLE_SendData(uint8* buffer, uint8 sendBytes);
 void bt_to_app(uint8 *buf,uint8 len);
 void app_to_bt(uint8 *ptr, uint8 len); 
 
-
+#if 1//BAT_DET_EN
+void task_battery_check(uint8 bat_vol);
+#endif
 
 #if 1//USER_RSSI_EN
 static void peripheralRssiReadCB( int8 rssi );

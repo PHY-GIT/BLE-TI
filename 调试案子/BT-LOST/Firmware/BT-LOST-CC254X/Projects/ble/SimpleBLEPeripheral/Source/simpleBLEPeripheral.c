@@ -79,6 +79,11 @@
   #include "oad_target.h"
 #endif
 
+#include "npi.h"
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#include "math.h"
 
 #if (HAL_UART ==TRUE)
 #include "npi.h"
@@ -87,6 +92,9 @@
 #else
 #define PRINTF_DEBUG              0
 #endif
+
+#define  USER_RSSI_EN             1          //rssi
+#define  SEND_RSSI_EN             0          //发送距离
 
   
 /*********************************************************************
@@ -320,7 +328,7 @@ static char *bdAddr2Str ( uint8 *pAddr );
 static gapRolesCBs_t simpleBLEPeripheral_PeripheralCBs =
 {
   peripheralStateNotificationCB,  // Profile State Change Callbacks
-  NULL                            // When a valid RSSI is read from controller (not used by application)
+  peripheralRssiReadCB,//NULL                            // When a valid RSSI is read from controller (not used by application)
 };
 
 // GAP Bond Manager Callbacks
@@ -406,6 +414,14 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 
   // Set the GAP Characteristics
   GGS_SetParameter( GGS_DEVICE_NAME_ATT, GAP_DEVICE_NAME_LEN, attDeviceName );
+
+
+  {
+     // 设置rssi 参数更新速率
+     uint16 rssi_read_rate_1ms = 1000; //一秒更新1次   
+     GAPRole_SetParameter(GAPROLE_RSSI_READ_RATE, sizeof( uint16 ), &rssi_read_rate_1ms);
+  }
+
 
   // Set advertising interval
   {
@@ -500,7 +516,7 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
 
   VOID task_id; // OSAL required parameter that isn't used in this function
 
-#if 1
+#if 0
   uint8 pktBuffer[4];
   pktBuffer[0] = 0x12;
   pktBuffer[1] = 0x34;
@@ -551,7 +567,7 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
     //performPeriodicTask();
     if(gapProfileState == GAPROLE_CONNECTED)
     {
-        bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+       // bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     }
     
     return (events ^ SBP_PERIODIC_EVT);
@@ -591,22 +607,109 @@ static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg )
 }
 uint8 gTxPower = LL_EXT_TX_POWER_0_DBM;
 
-static uint8 GAPRole_flag=TRUE;  
-static uint8 old_GAPRole_flag=TRUE;  
+//static uint8 GAPRole_flag=TRUE;  
+//static uint8 old_GAPRole_flag=TRUE;  
 
 static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 {
   (void)shift;  // Intentionally unreferenced parameter
 
-  HalLcdWriteStringValue( "key = 0x", keys, 16, HAL_LCD_LINE_5 );
 
-  // smartRF开发板上的S1 对应我们源码上的HAL_KEY_SW_6
+  uint8 pktBuffer[3];
+
+
+  HalLcdWriteStringValue( "key = 0x", keys, 16, HAL_LCD_LINE_5 );
+  if ( keys & HAL_KEY_SW_1 )
+  {
+
+  	pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x01;
+  	pktBuffer[2] = 0x41;
+
+	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+    HalLcdWriteString( "HAL_KEY_SW_1", HAL_LCD_LINE_5 );
+  }
+  if ( keys & HAL_KEY_SW_2 )
+  {
+
+  	pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x02;
+  	pktBuffer[2] = 0x42;
+
+
+	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+    HalLcdWriteString( "HAL_KEY_SW_2", HAL_LCD_LINE_5 );
+  }
+  if ( keys & HAL_KEY_SW_3 )
+  {
+
+	pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x03;
+  	pktBuffer[2] = 0x43;
+
+
+	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+    HalLcdWriteString( "HAL_KEY_SW_3", HAL_LCD_LINE_5 );
+  }
+  if ( keys & HAL_KEY_SW_4)
+  {
+    pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x04;
+  	pktBuffer[2] = 0x44;
+
+	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+    HalLcdWriteString( "HAL_KEY_SW_4", HAL_LCD_LINE_5 );
+  }	  
+  if ( keys & HAL_KEY_SW_5 )
+  {
+    pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x05;
+  	pktBuffer[2] = 0x45;
+
+	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+    HalLcdWriteString( "HAL_KEY_SW_5", HAL_LCD_LINE_5 );
+  } 
   if ( keys & HAL_KEY_SW_6 )
   {
-    
+    pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x06;
+  	pktBuffer[2] = 0x46;
+#if 0
+    if(GAPRole_flag == TRUE)
+    {
+       // bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+       GAPRole_TerminateConnection();  // 终止连接
+       simpleBLE_Delay_1ms(100);
+       GAPRole_flag =FALSE;
+       old_GAPRole_flag =FALSE;
+       GAPRole_SetParameter( GAPROLE_ADVERT_ENABLED, sizeof( uint8 ), &GAPRole_flag );
+    }else
+    {
+        if(old_GAPRole_flag ==FALSE){
+            GAPRole_flag =TRUE;
+           // old_GAPRole_flag =GAPRole_flag;
+            GAPRole_SetParameter( GAPROLE_ADVERT_ENABLED, sizeof( uint8 ), &GAPRole_flag );
+        }
+       
+       // 终止连接后， 需要复位从机
+       //HAL_SYSTEM_RESET();
+    }
+
+#endif
+	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     HalLcdWriteString( "HAL_KEY_SW_6", HAL_LCD_LINE_5 );
   }
+  if ( keys & HAL_KEY_SW_7 )
+  {
+    pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x07;
+  	pktBuffer[2] = 0x47;
 
+	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+    HalLcdWriteString( "HAL_KEY_SW_7", HAL_LCD_LINE_5 );
+  }	
+  
+#if 0
   if ( keys & HAL_KEY_UP )
   { 
 #if 0  
@@ -672,7 +775,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 #endif    
     HalLcdWriteString( "HAL_KEY_DOWN", HAL_LCD_LINE_6 );
   }
-  
+ #endif 
 }
 
 /*********************************************************************
@@ -1033,6 +1136,123 @@ void simpleBLE_SendData(uint8* buffer, uint8 sendBytes)
 #endif
     }
 }
+
+
+#if USER_RSSI_EN
+
+static void peripheralRssiReadCB( int8 rssi )
+{
+    simpleBle_SetRssi(rssi);
+}
+
+static float GUA_CalcDistByRSSI(int rssi)    
+{    
+    uint8 A = 49;  
+    float n = 3.0;  
+      
+    int iRssi = abs(rssi);    
+    float power = (iRssi-A)/(10*n);         
+    return pow(10, power);    
+}
+
+#if SEND_RSSI_EN
+// 求滑动平均值
+#define DIST_MAX   5
+int nDistbuf[DIST_MAX];
+uint8 index = 0;
+
+static int dist_filer(int dist)
+{
+    int i = 0;
+    int sum = 0;
+    int max = 0;
+    int min = 1000;
+    if(index == DIST_MAX)
+    {
+         static int index2 = 0;
+         nDistbuf[index2++] = dist;
+         index2 %= DIST_MAX;
+
+         // 去掉最大最小值, 再求平均
+         
+         for(i =0; i< DIST_MAX; i++)
+         {
+            if(max < nDistbuf[i])
+               max = nDistbuf[i];
+            if(min > nDistbuf[i])
+               min = nDistbuf[i];
+            
+            sum += nDistbuf[i];
+         }
+         return (sum-max-min)/(DIST_MAX-2);
+    }
+    else
+    {
+        nDistbuf[index++] = dist;
+        return 0;
+    }
+}
+#endif
+
+
+// 保存RSSI 到系统变量
+void simpleBle_SetRssi(int8 rssi)
+{
+#if SEND_RSSI_EN
+    uint8 pktBuffer[4];   //buf
+	uint8 dist_h=0;       //高位   单位cm
+	uint8 dist_l=0;       //低位   
+	uint16 temp_dist =0;     //temp变量，平均值  
+
+    pktBuffer[0] = 0x50;   //头
+#endif
+    if(gapProfileState == GAPROLE_CONNECTED)
+    {
+#if (defined HAL_LCD) && (HAL_LCD == TRUE)     
+        char str[32];    
+#endif
+        float nfDist = GUA_CalcDistByRSSI(rssi);         //通过算法获得r，单位为m  
+        //uint8 aa=(uint8)nfDist;
+			
+        uint16 nDist = (uint16)(nfDist * 100);                 //将r的数值放大100倍，单位为cm
+#if SEND_RSSI_EN			
+		temp_dist=dist_filer(nDist);
+
+		if(temp_dist >0xff){
+			dist_h =(uint8)((temp_dist>>8)&0x00FF);
+			dist_l =(uint8)(temp_dist&0x00FF);
+		}else{
+			dist_h =0;
+			dist_l =temp_dist;
+		}
+		
+   		pktBuffer[1] =dist_h; 
+		pktBuffer[2] =dist_l; 
+		pktBuffer[3] = 0x55;   //尾
+		bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+#endif
+#if (defined HAL_LCD) && (HAL_LCD == TRUE) 		
+      
+        sprintf(str, "Rssi=%2d, %4dCM\r\n", (uint8) (-rssi), dist_filer(nDist));
+
+        if(1)
+        {
+            //NPI_WriteTransport((uint8*)str, strlen(str));
+
+		    HalLcdWriteString(str,  HAL_LCD_LINE_6 );		
+	
+            //发送到对端。 比如手机
+            //qq_write((uint8*)str, strlen(str));
+            // 启动事件，然后在事件中再启动定时器定时检测数据并发送到网络
+            //osal_set_event( simpleBLETaskId, SBP_UART_EVT );     
+        }
+#endif
+        //LCD_WRITE_STRING(str, HAL_LCD_LINE_5 );
+    }  
+}
+
+
+#endif
 
 
 /*********************************************************************

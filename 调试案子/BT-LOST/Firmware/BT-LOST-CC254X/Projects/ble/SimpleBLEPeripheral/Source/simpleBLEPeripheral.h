@@ -88,6 +88,15 @@ void bt_to_app(uint8 *buf,uint8 len);
 void app_to_bt(uint8 *ptr, uint8 len); 
 
 
+
+#if 1//USER_RSSI_EN
+static void peripheralRssiReadCB( int8 rssi );
+static int dist_filer(int dist);
+void simpleBle_SetRssi(int8 rssi);
+static float GUA_CalcDistByRSSI(int rssi);
+static void peripheralRssiReadCB( int8 rssi );
+#endif
+
 /*********************************************************************
 *********************************************************************/
 

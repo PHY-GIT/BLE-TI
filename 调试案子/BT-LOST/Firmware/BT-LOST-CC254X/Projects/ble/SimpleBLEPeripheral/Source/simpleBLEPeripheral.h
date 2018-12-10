@@ -59,6 +59,8 @@ extern "C"
 #define SBP_PERIODIC_EVT                                  0x0002
 #define SBP_ADV_IN_CONNECTION_EVT                         0x0004
 
+#define SBP_KEY_UP_EVT                                    0x0008
+
 /*********************************************************************
  * MACROS
  */
@@ -98,6 +100,8 @@ void simpleBle_SetRssi(int8 rssi);
 static float GUA_CalcDistByRSSI(int rssi);
 static void peripheralRssiReadCB( int8 rssi );
 #endif
+
+
 
 /*********************************************************************
 *********************************************************************/

@@ -97,6 +97,24 @@
 #define  SEND_RSSI_EN             0          //发送距离
 #define  BAT_DET_EN               1          //外部电池检测
 
+#define  USER_SW_EN               1          //客户按键开关
+#define  USER_LED_EN              1          //客户led
+
+#if USER_SW_EN
+//按协议
+#define KEY_SET_SW    0x41   //设置按键开关  
+#define KEY_SW_STA    0x42   //查询按键开关
+#endif
+
+/* led */
+#define LED_PORT   P2
+#define LED_BIT    BV(0)
+#define LED_SEL    P2SEL
+#define LED_DIR    P2DIR
+
+#define LED_H()    {P2_0 =0;}   
+#define LED_L()    {P2_0 =1;}
+
 
 /*********************************************************************
  * MACROS
@@ -108,6 +126,7 @@
 
 // How often to perform periodic event
 #define SBP_PERIODIC_EVT_PERIOD               1000  //1000ms
+
 
 // What is the advertising interval when device is discoverable (units of 625us, 160=100ms)
 #define DEFAULT_ADVERTISING_INTERVAL          160
@@ -168,6 +187,11 @@ extern void simpleBLE_Delay_1ms(int times);
 #if BAT_DET_EN
 static uint8 bat_sta=0;  //0正常  1:低电   
 #endif
+#if USER_SW_EN
+static uint8 key_sw_sta=1;     //0关，1开
+static uint8 key_up_flg=1;     //500ms
+#endif
+
 //功率配置，默认0dbm
 #define LL_EXT_TX_POWER_MINUS_23_DBM                   0 // -23dbm  功率 最小
 #define LL_EXT_TX_POWER_MINUS_6_DBM                    1 // -6dbm   
@@ -269,6 +293,16 @@ static uint8 advertData[] =
   LO_UINT16( SIMPLEPROFILE_SERV_UUID ),
   HI_UINT16( SIMPLEPROFILE_SERV_UUID ),
 
+  0x09,   // length of this data
+  GAP_ADTYPE_MANUFACTURER_SPECIFIC,   //制造商广播包
+  'L',
+  'O',
+  'S',
+  'T',
+  '-',
+  'B',
+  'L',
+  'E',
 };
 
 // GAP - Advertisement data (max size = 31 bytes, though this is
@@ -498,6 +532,10 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 #if 0//   //修改发射功率
 	HCI_EXT_SetTxPowerCmd(LL_EXT_TX_POWER_4_DBM);
 #endif
+#if USER_LED_EN
+    LED_SEL &= ~(LED_BIT);
+    LED_DIR |= (LED_BIT);
+#endif
 }
 
 
@@ -548,8 +586,21 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
     // Set timer for first periodic event
     osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT, SBP_PERIODIC_EVT_PERIOD );
 
+#if USER_SW_EN
+     osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_KEY_UP_EVT, 500 );
+#endif
+
     return ( events ^ SBP_START_DEVICE_EVT );
   }
+
+#if USER_SW_EN
+  if ( events & SBP_KEY_UP_EVT )
+  {  
+        key_up_flg =1; //500ms
+        osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_KEY_UP_EVT, 500 );
+        return (events ^ SBP_KEY_UP_EVT);
+  }
+#endif
 
   if ( events & SBP_PERIODIC_EVT )
   {
@@ -590,7 +641,7 @@ void task_battery_check(uint8 bat_vol)
 {
     uint8 pktBuffer[3];
     static uint8 bat_cnt=0;
-    static uint8 warning_cnt=0;
+    static uint16 warning_cnt=0;
     pktBuffer[0] = 0x00;pktBuffer[1] = 0x00;pktBuffer[2] = 0x00;
 
     if((bat_vol <= 0x33)){   //2.9v
@@ -615,7 +666,7 @@ void task_battery_check(uint8 bat_vol)
     }
 
 
-    if((++warning_cnt >=30)&&(bat_sta ==1)){   //30s一次
+    if((++warning_cnt >=300)&&(bat_sta ==1)){   //5分钟一次
         pktBuffer[0] = 0x50;
         pktBuffer[1] = 0x01;
         pktBuffer[2] = 0x51;
@@ -673,6 +724,19 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
   uint8 pktBuffer[3];
 
   pktBuffer[0] = 0x00;pktBuffer[1] = 0x00;pktBuffer[2] = 0x00;
+    
+  if(keys==0){
+     LED_L();
+  }else{
+     LED_H();
+  }  
+    
+#if USER_SW_EN
+  if(key_sw_sta ==0)     return;  //没有打开开关  
+  if(key_up_flg ==0)     return;  //500ms  
+#endif
+
+  //bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0])); 
 
   HalLcdWriteStringValue( "key = 0x", keys, 16, HAL_LCD_LINE_5 );
   if ( keys & HAL_KEY_SW_1 )
@@ -764,7 +828,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     HalLcdWriteString( "HAL_KEY_SW_7", HAL_LCD_LINE_5 );
   }	
-  
+  key_up_flg =0;
 #if 0
   if ( keys & HAL_KEY_UP )
   { 
@@ -1121,9 +1185,31 @@ static void NpiSerialCallback( uint8 port, uint8 events )
 //bt接收处理
 void app_to_bt(uint8 *ptr, uint8 len) 
 {
-    switch(ptr[0]){
+#if USER_SW_EN  
+    uint8 pktBuffer[3];      //buf
+    pktBuffer[0] = 0;
+    pktBuffer[1] = 0;
+    pktBuffer[2] = 0;
+#endif
     
-
+    switch(ptr[0]){
+#if USER_SW_EN  
+        case KEY_SET_SW:
+            if((ptr[0]+ptr[1])==ptr[2]){
+                if(ptr[1]<=1){
+                    key_sw_sta =ptr[1];
+                }
+            }
+            break;
+        case KEY_SW_STA:
+            if((ptr[0]+ptr[1])==ptr[2]){
+                pktBuffer[0] = 0x40;
+                pktBuffer[1] = key_sw_sta;
+                pktBuffer[2] = (0x40+key_sw_sta);
+                bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0])); 
+            }
+            break;
+#endif        
      default:
         break;    
     }    

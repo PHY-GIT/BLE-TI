@@ -1,4 +1,3 @@
----- advertData Matches (4 in 2 files) ----
-Gap.h (components\ble\include):   * @param       dataLen - Octet length of advertData
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):static uint8 advertData[] =
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):    GAPRole_SetParameter( GAPROLE_ADVERT_DATA, sizeof( advertData ), advertData );
+---- PUSH2_SBIT Matches (2 in 1 files) ----
+Hal_board_cfg.h (components\hal\target\cc2540eb):#define PUSH2_SBIT                     P2_0
+Hal_board_cfg.h (components\hal\target\cc2540eb):#define HAL_PUSH_BUTTON2()        (PUSH2_POLARITY (PUSH2_SBIT))

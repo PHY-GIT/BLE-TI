@@ -188,7 +188,13 @@ extern void simpleBLE_Delay_1ms(int times);
 static uint8 bat_sta=0;  //0正常  1:低电   
 #endif
 #if USER_SW_EN
-static uint8 key_sw_sta=1;     //0关，1开
+static uint8 key_sw_1_sta=1;     //0关，1开
+static uint8 key_sw_2_sta=1;     //0关，1开
+static uint8 key_sw_3_sta=1;     //0关，1开
+static uint8 key_sw_4_sta=1;     //0关，1开
+static uint8 key_sw_5_sta=1;     //0关，1开
+static uint8 key_sw_6_sta=1;     //0关，1开
+static uint8 key_sw_7_sta=1;     //0关，1开
 static uint8 key_up_flg=1;     //500ms
 #endif
 
@@ -643,8 +649,10 @@ void task_battery_check(uint8 bat_vol)
     static uint8 bat_cnt=0;
     static uint16 warning_cnt=0;
     pktBuffer[0] = 0x00;pktBuffer[1] = 0x00;pktBuffer[2] = 0x00;
-
-    if((bat_vol <= 0x33)){   //2.9v
+#if 1
+//56K  -0x33
+//100k -0x2E
+    if((bat_vol <= 0x2e)){   //2.9v
         if(bat_cnt < 5){
             bat_cnt++;
         }else if(bat_cnt == 5){   //5s
@@ -676,7 +684,16 @@ void task_battery_check(uint8 bat_vol)
         }
         warning_cnt =0;
     }
+#else
+        pktBuffer[0] = 0x50;
+        pktBuffer[1] = 0x00;
+        pktBuffer[2] = bat_vol;
+        if(gapProfileState == GAPROLE_CONNECTED)
+        {
+            bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+        }
 
+#endif
     
 }
 #endif
@@ -732,14 +749,13 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
   }  
     
 #if USER_SW_EN
-  if(key_sw_sta ==0)     return;  //没有打开开关  
   if(key_up_flg ==0)     return;  //500ms  
 #endif
 
   //bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0])); 
 
   HalLcdWriteStringValue( "key = 0x", keys, 16, HAL_LCD_LINE_5 );
-  if ( keys & HAL_KEY_SW_1 )
+  if (( keys & HAL_KEY_SW_1 )&& key_sw_1_sta)
   {
 
   	pktBuffer[0] = 0x40;
@@ -749,7 +765,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     HalLcdWriteString( "HAL_KEY_SW_1", HAL_LCD_LINE_5 );
   }
-  if ( keys & HAL_KEY_SW_2 )
+  if ( (keys & HAL_KEY_SW_2)&&key_sw_2_sta )
   {
 
   	pktBuffer[0] = 0x40;
@@ -760,7 +776,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     HalLcdWriteString( "HAL_KEY_SW_2", HAL_LCD_LINE_5 );
   }
-  if ( keys & HAL_KEY_SW_3 )
+  if ( (keys & HAL_KEY_SW_3) &&key_sw_3_sta)
   {
 
 	pktBuffer[0] = 0x40;
@@ -771,7 +787,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     HalLcdWriteString( "HAL_KEY_SW_3", HAL_LCD_LINE_5 );
   }
-  if ( keys & HAL_KEY_SW_4)
+  if ( (keys & HAL_KEY_SW_4) &&key_sw_4_sta)
   {
     pktBuffer[0] = 0x40;
   	pktBuffer[1] = 0x04;
@@ -780,7 +796,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     HalLcdWriteString( "HAL_KEY_SW_4", HAL_LCD_LINE_5 );
   }	  
-  if ( keys & HAL_KEY_SW_5 )
+  if ( (keys & HAL_KEY_SW_5 ) &&key_sw_5_sta)
   {
     pktBuffer[0] = 0x40;
   	pktBuffer[1] = 0x05;
@@ -789,7 +805,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     HalLcdWriteString( "HAL_KEY_SW_5", HAL_LCD_LINE_5 );
   } 
-  if ( keys & HAL_KEY_SW_6 )
+  if ( (keys & HAL_KEY_SW_6) &&key_sw_6_sta )
   {
     pktBuffer[0] = 0x40;
   	pktBuffer[1] = 0x06;
@@ -819,7 +835,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     HalLcdWriteString( "HAL_KEY_SW_6", HAL_LCD_LINE_5 );
   }
-  if ( keys & HAL_KEY_SW_7 )
+  if ( (keys & HAL_KEY_SW_7) &&key_sw_7_sta )
   {
     pktBuffer[0] = 0x40;
   	pktBuffer[1] = 0x07;
@@ -956,7 +972,17 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
         #if (defined HAL_LCD) && (HAL_LCD == TRUE)
           HalLcdWriteString( "Connected",  HAL_LCD_LINE_3 );
         #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
-      }
+#if BAT_DET_EN
+        if(bat_sta ==1)
+        {
+            uint8 pktBuffer[3];
+            pktBuffer[0] = 0x50;
+            pktBuffer[1] = 0x01;
+            pktBuffer[2] = 0x51;
+            bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+         }  
+#endif
+        }
       break;
 
     case GAPROLE_WAITING:      //断开连接
@@ -1182,32 +1208,103 @@ static void NpiSerialCallback( uint8 port, uint8 events )
 }
 #endif
 
-//bt接收处理
-void app_to_bt(uint8 *ptr, uint8 len) 
+
+#if USER_SW_EN 
+
+//设置按键开关状态
+void key_set_sw_deal(uint8 *ptr)
 {
-#if USER_SW_EN  
-    uint8 pktBuffer[3];      //buf
+
+    if(((ptr[0]+ptr[1]+ptr[2])==ptr[3])&&(ptr[2]<=1)){  //不能大过1
+        switch(ptr[1]){
+            case 0x01:  //按键1
+                key_sw_1_sta =ptr[2];
+                break;
+            case 0x02:  //按键2
+                key_sw_2_sta =ptr[2];
+                break;
+            case 0x03:  //按键3
+                key_sw_3_sta =ptr[2];
+                break;
+            case 0x04:  //按键4
+                key_sw_4_sta =ptr[2];
+                break;
+            case 0x05:  //按键5
+                key_sw_5_sta =ptr[2];
+                break;
+            case 0x06:  //按键6
+                key_sw_6_sta =ptr[2];
+                break;
+            case 0x07:  //按键7
+                key_sw_7_sta =ptr[2];
+                break;   
+                
+            default:
+                ;//fail
+                break;
+        }
+    }
+}
+
+//查询按键开关状态
+void key_sw_sta_deal(uint8 *ptr)
+{ 
+    uint8 pktBuffer[4];      //buf
     pktBuffer[0] = 0;
     pktBuffer[1] = 0;
     pktBuffer[2] = 0;
+    pktBuffer[3] = 0;
+
+
+    if(((ptr[0]+ptr[1]+ptr[2])==ptr[3])&&(ptr[2] ==0x00)){  //查询为00
+        pktBuffer[0] = 0x42;
+        pktBuffer[1] = ptr[1];
+        switch(ptr[1]){
+            case 0x01:  //按键1
+                pktBuffer[2] =key_sw_1_sta; 
+                break;
+            case 0x02:  //按键2
+                pktBuffer[2] =key_sw_2_sta; 
+                break;
+            case 0x03:  //按键3
+                pktBuffer[2] =key_sw_3_sta; 
+                break;
+            case 0x04:  //按键4
+                pktBuffer[2] =key_sw_4_sta; 
+                break;
+            case 0x05:  //按键5
+                pktBuffer[2] =key_sw_5_sta; 
+                break;
+            case 0x06:  //按键6
+                pktBuffer[2] =key_sw_6_sta; 
+                break;
+            case 0x07:  //按键7
+                pktBuffer[2] =key_sw_7_sta; 
+                break;   
+                
+            default:
+                 ;//fail
+                break;
+        }
+        pktBuffer[3] = (0x42+pktBuffer[1]+pktBuffer[2]);
+        bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0])); 
+    }
+
+
+}
+
 #endif
-    
+
+//bt接收处理
+void app_to_bt(uint8 *ptr, uint8 len) 
+{
     switch(ptr[0]){
 #if USER_SW_EN  
         case KEY_SET_SW:
-            if((ptr[0]+ptr[1])==ptr[2]){
-                if(ptr[1]<=1){
-                    key_sw_sta =ptr[1];
-                }
-            }
+            key_set_sw_deal(ptr);
             break;
         case KEY_SW_STA:
-            if((ptr[0]+ptr[1])==ptr[2]){
-                pktBuffer[0] = 0x40;
-                pktBuffer[1] = key_sw_sta;
-                pktBuffer[2] = (0x40+key_sw_sta);
-                bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0])); 
-            }
+            key_sw_sta_deal(ptr);
             break;
 #endif        
      default:

@@ -184,9 +184,9 @@
 #define HAL_KEY_SW_3_EDGEBIT  BV(0)
 #define HAL_KEY_SW_3_EDGE     HAL_KEY_FALLING_EDGE
 
-/* SW_4 is at P0.3 */
+/* SW_4 is at P0.4 */
 #define HAL_KEY_SW_4_PORT   P0
-#define HAL_KEY_SW_4_BIT    BV(3)
+#define HAL_KEY_SW_4_BIT    BV(4)
 #define HAL_KEY_SW_4_SEL    P0SEL
 #define HAL_KEY_SW_4_DIR    P0DIR
 
@@ -195,7 +195,7 @@
 #define HAL_KEY_SW_4_IEN      IEN1  /* CPU interrupt mask register */
 #define HAL_KEY_SW_4_IENBIT   BV(5) /* Mask bit for all of Port_0 */
 #define HAL_KEY_SW_4_ICTL     P0IEN /* Port Interrupt Control register */
-#define HAL_KEY_SW_4_ICTLBIT  BV(3) /* P0IEN - P0.0 enable/disable bit */
+#define HAL_KEY_SW_4_ICTLBIT  BV(4) /* P0IEN - P0.0 enable/disable bit */
 #define HAL_KEY_SW_4_PXIFG    P0IFG /* Interrupt flag at source */
 
 #define HAL_KEY_SW_4_EDGEBIT  BV(0)
@@ -386,7 +386,7 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
   /* Determine if interrupt is enable or not */
   if (Hal_KeyIntEnable)
   {
- //P00  P01  P02  P03  P04  
+ //P00  P01  P02  P04  
     /* Rising/Falling edge configuratinn */
     PICTL &= ~(HAL_KEY_SW_1_EDGEBIT);    /* Clear the edge bit */
 
@@ -483,7 +483,7 @@ uint8 HalKeyRead ( void )
 {
   uint8 keys = 0;
 
- //P00  P01  P02  P03  P04
+ //P00  P01  P02   P04
   if (!(HAL_KEY_SW_1_PORT & HAL_KEY_SW_1_BIT))    /* Key is active low */
   {
     keys |= HAL_KEY_SW_1;
@@ -535,7 +535,7 @@ void HalKeyPoll (void)
   uint8 keys = 0;
   uint8 notify = 0;
 
- //P00  P01  P02  P03  P04  
+ //P00  P01  P02   P04  
   if(!(HAL_KEY_SW_1_PORT & HAL_KEY_SW_1_BIT))    /* Key is active high */  
   {
     keys |= HAL_KEY_SW_1;
@@ -673,7 +673,7 @@ void halProcessKeyInterrupt (void)
 {
   bool valid=FALSE;
 
- //P00  P01  P02  P03  P04
+ //P00  P01  P02   P04
   if (HAL_KEY_SW_1_PXIFG & HAL_KEY_SW_1_BIT)  /* Interrupt Flag has been set */
   {
     HAL_KEY_SW_1_PXIFG = ~(HAL_KEY_SW_1_BIT); /* Clear Interrupt Flag */

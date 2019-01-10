@@ -615,6 +615,7 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
      uint8 adc;
 
      HalAdcSetReference( HAL_ADC_REF_AVDD );
+	 //HalAdcSetReference(HAL_ADC_REF_125V);
      adc = HalAdcRead( HAL_ADC_CHANNEL_7, HAL_ADC_RESOLUTION_8 );  //1s
      
      task_battery_check(adc);
@@ -629,12 +630,15 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
 
     // Perform periodic application task
     //performPeriodicTask();
-    //if(gapProfileState == GAPROLE_CONNECTED)
-    //{
-    //    pktBuffer[1] =adc;
-    //    bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
-    //}
-    
+ #if 0  
+ 	uint8 pktBuffer[2];
+    if(gapProfileState == GAPROLE_CONNECTED)
+    {	
+    	pktBuffer[0] =0x11;
+        pktBuffer[1] =adc;
+        bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+    }
+#endif
     return (events ^ SBP_PERIODIC_EVT);
   }
 
@@ -652,11 +656,12 @@ void task_battery_check(uint8 bat_vol)
 #if 1
 //56K  -0x33
 //100k -0x2E
-    if((bat_vol <= 0x2e)){   //2.9v
+
+    if((bat_vol <= 0x2e)||(bat_vol >= 0x35)){   //2.9v  3.3
         if(bat_cnt < 5){
             bat_cnt++;
         }else if(bat_cnt == 5){   //5s
-            bat_cnt = 10;
+            bat_cnt = 6;
             warning_cnt =0;
             if(gapProfileState == GAPROLE_CONNECTED)
             {
@@ -664,13 +669,14 @@ void task_battery_check(uint8 bat_vol)
                 pktBuffer[1] = 0x01;
                 pktBuffer[2] = 0x51;
                 bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
-                bat_sta =1;   //低电
+                bat_sta =1;   //低电或高过3.3
             }
         }
     }else{
-        bat_sta =0;
-        bat_cnt =0;
-        warning_cnt =0;
+		bat_sta =0;
+		bat_cnt =0;
+		warning_cnt =0;
+
     }
 
 

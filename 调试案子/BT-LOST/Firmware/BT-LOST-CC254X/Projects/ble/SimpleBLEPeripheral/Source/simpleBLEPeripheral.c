@@ -184,9 +184,10 @@
 extern void simpleBLE_Delay_1ms(int times);   
 #endif
 
-#if BAT_DET_EN
-static uint8 bat_sta=0;  //0正常  1:低电   
+#if 1//BAT_DET_EN
+uint8 bat_sta=0;  //0正常  1:低电 
 #endif
+
 #if USER_SW_EN
 static uint8 key_sw_1_sta=1;     //0关，1开
 static uint8 key_sw_2_sta=1;     //0关，1开
@@ -355,7 +356,7 @@ static void peripheralStateNotificationCB( gaprole_States_t newState );
 static void simpleProfileChangeCB( uint8 paramID );
 
 #if defined( CC2540_MINIDK )
-static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys );
+static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys );//ABC
 #endif
 
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
@@ -541,6 +542,7 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 #if USER_LED_EN
     LED_SEL &= ~(LED_BIT);
     LED_DIR |= (LED_BIT);
+	LED_L();
 #endif
 }
 
@@ -612,11 +614,11 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
   {
      
 #if BAT_DET_EN
-     uint8 adc;
+     uint8 adc =0;
 
-     HalAdcSetReference( HAL_ADC_REF_AVDD );
+     //HalAdcSetReference( HAL_ADC_REF_AVDD );
 	 //HalAdcSetReference(HAL_ADC_REF_125V);
-     adc = HalAdcRead( HAL_ADC_CHANNEL_7, HAL_ADC_RESOLUTION_8 );  //1s
+     //adc = HalAdcRead( HAL_ADC_CHANNEL_7, HAL_ADC_RESOLUTION_8 );  //1s
      
      task_battery_check(adc);
 #endif
@@ -649,11 +651,12 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
 #if BAT_DET_EN
 void task_battery_check(uint8 bat_vol)
 {
+#if 0  //ad
     uint8 pktBuffer[3];
     static uint8 bat_cnt=0;
     static uint16 warning_cnt=0;
     pktBuffer[0] = 0x00;pktBuffer[1] = 0x00;pktBuffer[2] = 0x00;
-#if 1
+#if 0
 //56K  -0x33
 //100k -0x2E
 
@@ -696,11 +699,34 @@ void task_battery_check(uint8 bat_vol)
         pktBuffer[2] = bat_vol;
         if(gapProfileState == GAPROLE_CONNECTED)
         {
-            bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+           // bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
         }
 
 #endif
-    
+#else
+    uint8 pktBuffer[3];
+    static uint16 warning_cnt=0;
+    pktBuffer[0] = 0x00;pktBuffer[1] = 0x00;pktBuffer[2] = 0x00;	
+
+	if(bat_sta ==0){
+		warning_cnt =0;
+		return;   //没有低电
+	}
+
+    if((++warning_cnt >=300)&&(bat_sta ==1)){   //5分钟一次
+        pktBuffer[0] = 0x50;
+        pktBuffer[1] = 0x01;
+        pktBuffer[2] = 0x51;
+		//LED_H();
+        if(gapProfileState == GAPROLE_CONNECTED)
+        {	 
+            bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+        }
+		//LED_L(); 
+        warning_cnt =0;
+    }
+	
+#endif
 }
 #endif
 
@@ -739,8 +765,94 @@ uint8 gTxPower = LL_EXT_TX_POWER_0_DBM;
 //static uint8 GAPRole_flag=TRUE;  
 //static uint8 old_GAPRole_flag=TRUE;  
 
-static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
+static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint16 keys )//ABC
 {
+#if 1
+  (void)shift;
+  uint8 pktBuffer[3];
+
+  pktBuffer[0] = 0x00;pktBuffer[1] = 0x00;pktBuffer[2] = 0x00;
+    
+  if(keys==0){
+     LED_L();
+	// bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+  }
+
+#if USER_SW_EN
+  if(key_up_flg ==0)     return;  //500ms  
+#endif 
+
+  if (keys & HAL_KEY_SW_8)
+  {
+  	if(bat_sta==0){   //按下就发
+		pktBuffer[0] = 0x50;
+		pktBuffer[1] = 0x01;
+		pktBuffer[2] = 0x51;
+	}
+	bat_sta =1;
+  }
+  
+  if ( (keys & HAL_KEY_SW_7) &&key_sw_7_sta )
+  {
+    pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x07;
+  	pktBuffer[2] = 0x47;
+  }	
+  
+  if ( (keys & HAL_KEY_SW_6) &&key_sw_6_sta )
+  {
+    pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x06;
+  	pktBuffer[2] = 0x46;
+  }
+
+  if ( (keys & HAL_KEY_SW_5 ) &&key_sw_5_sta)
+  {
+    pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x05;
+  	pktBuffer[2] = 0x45;
+  }	
+
+  if ((keys & HAL_KEY_SW_1 )&& key_sw_1_sta)
+  {
+
+  	pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x01;
+  	pktBuffer[2] = 0x41;
+  }
+  if ( (keys & HAL_KEY_SW_2)&&key_sw_2_sta )
+  {
+
+  	pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x02;
+  	pktBuffer[2] = 0x42;
+  }
+  if ( (keys & HAL_KEY_SW_3) &&key_sw_3_sta)
+  {
+
+	pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x03;
+  	pktBuffer[2] = 0x43;
+  }
+  if ( (keys & HAL_KEY_SW_4) &&key_sw_4_sta)
+  {
+    pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x04;
+  	pktBuffer[2] = 0x44;
+  }	
+ 
+  if(pktBuffer[0] !=0)
+  {
+  	 if(pktBuffer[0] ==0x40)
+	 {
+		 LED_H(); 
+	 }
+	  bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+  }
+  
+  key_up_flg =0;
+
+#else
   (void)shift;  // Intentionally unreferenced parameter
 
 
@@ -750,24 +862,27 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
     
   if(keys==0){
      LED_L();
-  }else{
-     LED_H();
-  }  
+  }
+  //else{   //改为哪路开才亮灯
+  //   LED_H();
+  //}  
     
 #if USER_SW_EN
   if(key_up_flg ==0)     return;  //500ms  
 #endif
-
+  
+	
   //bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0])); 
 
   HalLcdWriteStringValue( "key = 0x", keys, 16, HAL_LCD_LINE_5 );
-  if (( keys & HAL_KEY_SW_1 )&& key_sw_1_sta)
+  if ((keys & HAL_KEY_SW_1 )&& key_sw_1_sta)
   {
 
   	pktBuffer[0] = 0x40;
   	pktBuffer[1] = 0x01;
   	pktBuffer[2] = 0x41;
 
+	LED_H();
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     HalLcdWriteString( "HAL_KEY_SW_1", HAL_LCD_LINE_5 );
   }
@@ -777,6 +892,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
   	pktBuffer[0] = 0x40;
   	pktBuffer[1] = 0x02;
   	pktBuffer[2] = 0x42;
+	LED_H();
 
 
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
@@ -788,6 +904,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 	pktBuffer[0] = 0x40;
   	pktBuffer[1] = 0x03;
   	pktBuffer[2] = 0x43;
+	LED_H();
 
 
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
@@ -798,6 +915,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
     pktBuffer[0] = 0x40;
   	pktBuffer[1] = 0x04;
   	pktBuffer[2] = 0x44;
+	LED_H();
 
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     HalLcdWriteString( "HAL_KEY_SW_4", HAL_LCD_LINE_5 );
@@ -807,6 +925,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
     pktBuffer[0] = 0x40;
   	pktBuffer[1] = 0x05;
   	pktBuffer[2] = 0x45;
+	LED_H();
 
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     HalLcdWriteString( "HAL_KEY_SW_5", HAL_LCD_LINE_5 );
@@ -816,6 +935,7 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
     pktBuffer[0] = 0x40;
   	pktBuffer[1] = 0x06;
   	pktBuffer[2] = 0x46;
+	LED_H();
 #if 0
     if(GAPRole_flag == TRUE)
     {
@@ -846,11 +966,15 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
     pktBuffer[0] = 0x40;
   	pktBuffer[1] = 0x07;
   	pktBuffer[2] = 0x47;
+	LED_H();
 
 	bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
     HalLcdWriteString( "HAL_KEY_SW_7", HAL_LCD_LINE_5 );
   }	
   key_up_flg =0;
+
+#endif
+  
 #if 0
   if ( keys & HAL_KEY_UP )
   { 
@@ -978,7 +1102,7 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
         #if (defined HAL_LCD) && (HAL_LCD == TRUE)
           HalLcdWriteString( "Connected",  HAL_LCD_LINE_3 );
         #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
-#if BAT_DET_EN
+#if 0//BAT_DET_EN
         if(bat_sta ==1)
         {
             uint8 pktBuffer[3];

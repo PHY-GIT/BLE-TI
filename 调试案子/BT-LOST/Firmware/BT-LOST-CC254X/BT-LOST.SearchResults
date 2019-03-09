@@ -1,7 +1,12 @@
----- HalAdcSetReference Matches (6 in 4 files) ----
-Battservice.c (projects\ble\profiles\batt):  HalAdcSetReference( HAL_ADC_REF_125V );
-Hal_adc.c (components\hal\target\cc2540eb): * @fn      HalAdcSetReference
-Hal_adc.c (components\hal\target\cc2540eb):void HalAdcSetReference ( uint8 reference )
-Hal_adc.h (components\hal\include):extern void HalAdcSetReference ( uint8 reference );
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):     //HalAdcSetReference( HAL_ADC_REF_AVDD );
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):	 HalAdcSetReference(HAL_ADC_REF_125V);
+---- LED_H Matches (11 in 1 files) ----
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):#define LED_H()    {P2_0 =0;}   
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):		//LED_H();
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):		 LED_H(); 
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):  //   LED_H();
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):	LED_H();
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):	LED_H();
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):	LED_H();
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):	LED_H();
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):	LED_H();
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):	LED_H();
+simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):	LED_H();

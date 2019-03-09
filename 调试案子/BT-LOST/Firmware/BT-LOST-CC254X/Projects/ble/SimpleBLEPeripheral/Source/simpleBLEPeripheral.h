@@ -80,9 +80,10 @@ extern void SimpleBLEPeripheral_Init( uint8 task_id );
 extern uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events );
 
 //io-key
-static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys );
+static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint16 keys );//ABC
 //send
 void simpleBLE_SendData(uint8* buffer, uint8 sendBytes);
+
 
 
 

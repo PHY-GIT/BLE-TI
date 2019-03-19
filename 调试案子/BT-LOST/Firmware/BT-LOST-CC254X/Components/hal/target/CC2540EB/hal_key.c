@@ -88,10 +88,6 @@
 #include "hal_key.h"
 #include "osal.h"
 
-//#include "simpleBLEPeripheral.h"
-
-
-
 #if (defined HAL_KEY) && (HAL_KEY == TRUE)
 
 /**************************************************************************************************
@@ -206,25 +202,6 @@
 #define HAL_KEY_SW_4_EDGE     HAL_KEY_FALLING_EDGE
 
 
-/* SW_8 is at P0.7 */
-#define HAL_KEY_SW_8_PORT   P0
-#define HAL_KEY_SW_8_BIT    BV(7)
-#define HAL_KEY_SW_8_SEL    P0SEL
-#define HAL_KEY_SW_8_DIR    P0DIR
-
-
-
-/* SW_8 interrupts */
-#define HAL_KEY_SW_8_IEN      IEN1  /* CPU interrupt mask register */
-#define HAL_KEY_SW_8_IENBIT   BV(5) /* Mask bit for all of Port_0 */
-#define HAL_KEY_SW_8_ICTL     P0IEN /* Port Interrupt Control register */
-#define HAL_KEY_SW_8_ICTLBIT  BV(7) /* P0IEN - P0.0 enable/disable bit */
-#define HAL_KEY_SW_8_PXIFG    P0IFG /* Interrupt flag at source */
-
-#define HAL_KEY_SW_8_EDGEBIT  BV(0)
-#define HAL_KEY_SW_8_EDGE     HAL_KEY_FALLING_EDGE
-
-
 
 
 //////////////////////////////////////////////
@@ -323,7 +300,7 @@
 /**************************************************************************************************
  *                                        GLOBAL VARIABLES
  **************************************************************************************************/
-static uint16 halKeySavedKeys;     /* used to store previous key state in polling mode */
+static uint8 halKeySavedKeys;     /* used to store previous key state in polling mode */
 static halKeyCBack_t pHalKeyProcessFunction;
 static uint8 HalKeyConfigured;
 bool Hal_KeyIntEnable;            /* interrupt enable/disable flag */
@@ -366,10 +343,6 @@ void HalKeyInit( void )
 
   HAL_KEY_SW_4_SEL &= ~(HAL_KEY_SW_4_BIT);    /* Set pin function to GPIO */
   HAL_KEY_SW_4_DIR &= ~(HAL_KEY_SW_4_BIT);    /* Set pin direction to Input */
-
-
-  HAL_KEY_SW_8_SEL &= ~(HAL_KEY_SW_8_BIT);    /* Set pin function to GPIO */
-  HAL_KEY_SW_8_DIR &= ~(HAL_KEY_SW_8_BIT);    /* Set pin direction to Input */
 
 
   //P14 -P16
@@ -426,8 +399,7 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
 	HAL_KEY_SW_2_ICTL |= HAL_KEY_SW_2_ICTLBIT;
 	HAL_KEY_SW_3_ICTL |= HAL_KEY_SW_3_ICTLBIT;
 	HAL_KEY_SW_4_ICTL |= HAL_KEY_SW_4_ICTLBIT;	
-	HAL_KEY_SW_8_ICTL |= HAL_KEY_SW_8_ICTLBIT;	
-	
+  
     HAL_KEY_SW_1_IEN |= HAL_KEY_SW_1_IENBIT;
 	
     
@@ -435,7 +407,6 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
     HAL_KEY_SW_2_PXIFG = ~(HAL_KEY_SW_2_BIT);
     HAL_KEY_SW_3_PXIFG = ~(HAL_KEY_SW_3_BIT);
 	HAL_KEY_SW_4_PXIFG = ~(HAL_KEY_SW_4_BIT);
-	HAL_KEY_SW_8_PXIFG = ~(HAL_KEY_SW_8_BIT);
 
 
 //P14 P15 P16
@@ -476,8 +447,6 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
     HAL_KEY_SW_2_ICTL &= ~(HAL_KEY_SW_2_ICTLBIT); /* don't generate interrupt */
     HAL_KEY_SW_3_ICTL &= ~(HAL_KEY_SW_3_ICTLBIT); /* don't generate interrupt */
     HAL_KEY_SW_4_ICTL &= ~(HAL_KEY_SW_4_ICTLBIT); /* don't generate interrupt */
-    HAL_KEY_SW_8_ICTL &= ~(HAL_KEY_SW_8_ICTLBIT); /* don't generate interrupt */
-
 	
     HAL_KEY_SW_5_ICTL &= ~(HAL_KEY_SW_5_ICTLBIT); /* don't generate interrupt */
 	HAL_KEY_SW_6_ICTL &= ~(HAL_KEY_SW_6_ICTLBIT); /* don't generate interrupt */
@@ -488,7 +457,6 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
 	HAL_KEY_SW_2_IEN &= ~(HAL_KEY_SW_2_IENBIT);   /* Clear interrupt enable bit */
 	HAL_KEY_SW_3_IEN &= ~(HAL_KEY_SW_3_IENBIT);   /* Clear interrupt enable bit */
 	HAL_KEY_SW_4_IEN &= ~(HAL_KEY_SW_4_IENBIT);   /* Clear interrupt enable bit */
-	HAL_KEY_SW_8_IEN &= ~(HAL_KEY_SW_8_IENBIT);   /* Clear interrupt enable bit */
 	
 	HAL_KEY_SW_5_IEN &= ~(HAL_KEY_SW_5_IENBIT);   /* Clear interrupt enable bit */
 	HAL_KEY_SW_6_IEN &= ~(HAL_KEY_SW_6_IENBIT);   /* Clear interrupt enable bit */
@@ -502,7 +470,6 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
 }
 
 
-
 /**************************************************************************************************
  * @fn      HalKeyRead
  *
@@ -512,9 +479,9 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
  *
  * @return  keys - current keys status
  **************************************************************************************************/
-uint16 HalKeyRead ( void )
+uint8 HalKeyRead ( void )
 {
-  uint16 keys = 0;
+  uint8 keys = 0;
 
  //P00  P01  P02   P04
   if (!(HAL_KEY_SW_1_PORT & HAL_KEY_SW_1_BIT))    /* Key is active low */
@@ -532,13 +499,6 @@ uint16 HalKeyRead ( void )
   if (!(HAL_KEY_SW_4_PORT & HAL_KEY_SW_4_BIT))    /* Key is active high */  
   {
     keys |= HAL_KEY_SW_4;
-  }	
-
-  if (!(HAL_KEY_SW_8_PORT & HAL_KEY_SW_8_BIT))    /* Key is active high */  
-  {
-    keys |= HAL_KEY_SW_8;
-  }else{
-	  bat_sta =0;
   }	
 
 //P14 P15 P16 
@@ -572,7 +532,7 @@ uint16 HalKeyRead ( void )
  **************************************************************************************************/
 void HalKeyPoll (void)
 {
-  uint16 keys = 0;
+  uint8 keys = 0;
   uint8 notify = 0;
 
  //P00  P01  P02   P04  
@@ -591,13 +551,6 @@ void HalKeyPoll (void)
   if(!(HAL_KEY_SW_4_PORT & HAL_KEY_SW_4_BIT))    /* Key is active high */  
   {
     keys |= HAL_KEY_SW_4;
-  }	
-  
-  if(!(HAL_KEY_SW_8_PORT & HAL_KEY_SW_8_BIT))    /* Key is active high */  
-  {
-    keys |= HAL_KEY_SW_8;
-  }else{
-	  bat_sta =0;
   }	
 
  //P14 P15 P16
@@ -741,11 +694,6 @@ void halProcessKeyInterrupt (void)
     HAL_KEY_SW_4_PXIFG = ~(HAL_KEY_SW_4_BIT); /* Clear Interrupt Flag */
     valid = TRUE;
   }
-  if (HAL_KEY_SW_8_PXIFG & HAL_KEY_SW_8_BIT)  /* Interrupt Flag has been set */
-  {
-    HAL_KEY_SW_8_PXIFG = ~(HAL_KEY_SW_8_BIT); /* Clear Interrupt Flag */
-    valid = TRUE;
-  }
 
 
  //P14 P15 P16
@@ -794,7 +742,7 @@ void HalKeyEnterSleep ( void )
  *
  * @return  - return saved keys
  **************************************************************************************************/
-uint16 HalKeyExitSleep ( void )//ABC
+uint8 HalKeyExitSleep ( void )
 {
   /* Wake up and read keys */
   return ( HalKeyRead () );
@@ -821,7 +769,6 @@ HAL_ISR_FUNCTION( halKeyPort0Isr, P0INT_VECTOR )
 	||(HAL_KEY_SW_2_PXIFG & HAL_KEY_SW_2_BIT)\
 	||(HAL_KEY_SW_3_PXIFG & HAL_KEY_SW_3_BIT)\
 	||(HAL_KEY_SW_4_PXIFG & HAL_KEY_SW_4_BIT)\
-    ||(HAL_KEY_SW_8_PXIFG & HAL_KEY_SW_8_BIT)\
   )
   {
     halProcessKeyInterrupt();
@@ -835,7 +782,6 @@ HAL_ISR_FUNCTION( halKeyPort0Isr, P0INT_VECTOR )
   HAL_KEY_SW_2_PXIFG = 0;
   HAL_KEY_SW_3_PXIFG = 0;
   HAL_KEY_SW_4_PXIFG = 0;
-  HAL_KEY_SW_8_PXIFG = 0;
 
   HAL_KEY_CPU_PORT_0_IF = 0;
 
@@ -911,7 +857,7 @@ HAL_ISR_FUNCTION( halKeyPort2Isr, P2INT_VECTOR )
 
 void HalKeyInit(void){}
 void HalKeyConfig(bool interruptEnable, halKeyCBack_t cback){}
-uint16 HalKeyRead(void){ return 0;}//ABC
+uint8 HalKeyRead(void){ return 0;}
 void HalKeyPoll(void){}
 
 #endif

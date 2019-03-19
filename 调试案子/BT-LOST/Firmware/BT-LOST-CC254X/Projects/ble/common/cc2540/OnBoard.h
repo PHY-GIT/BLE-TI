@@ -75,7 +75,7 @@ typedef struct
 {
   osal_event_hdr_t hdr;
   uint8             state; // shift
-  uint16             keys;  // keys  //ABC
+  uint8             keys;  // keys
 } keyChange_t;
 
 // Timer clock and power-saving definitions

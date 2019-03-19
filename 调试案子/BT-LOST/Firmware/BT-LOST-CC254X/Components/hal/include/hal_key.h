@@ -49,8 +49,7 @@ extern "C"
  *                                             INCLUDES
  **************************************************************************************************/
 #include "hal_board.h"
-
-
+  
 /**************************************************************************************************
  * MACROS
  **************************************************************************************************/
@@ -66,7 +65,7 @@ extern "C"
 /* Key state - shift or nornal */
 #define HAL_KEY_STATE_NORMAL          0x00
 #define HAL_KEY_STATE_SHIFT           0x01
-#if 1
+
 #define HAL_KEY_SW_1 0x01  // Joystick up
 #define HAL_KEY_SW_2 0x02  // Joystick right
 #define HAL_KEY_SW_5 0x04  // Joystick center
@@ -75,22 +74,6 @@ extern "C"
 
 #define HAL_KEY_SW_6 0x20  // Button S1 if available
 #define HAL_KEY_SW_7 0x40  // Button S2 if available
-
-#define HAL_KEY_SW_8 0x80  // Button S2 if available
-#else
-#define HAL_KEY_SW_1 0x01  // Joystick up
-#define HAL_KEY_SW_2 0x02  // Joystick right
-#define HAL_KEY_SW_5 0x03  // Joystick center
-#define HAL_KEY_SW_4 0x04  // Joystick left
-#define HAL_KEY_SW_3 0x10  // Joystick down
-
-#define HAL_KEY_SW_6 0x20  // Button S1 if available
-#define HAL_KEY_SW_7 0x30  // Button S2 if available
-
-#define HAL_KEY_SW_8 0x08  // Button S2 if available
-
-#endif
-
 
 /* Joystick */
 #define HAL_KEY_UP     0x01  // Joystick up
@@ -116,11 +99,6 @@ typedef void (*halKeyCBack_t) (uint8 keys, uint8 state);
  **************************************************************************************************/
 extern bool Hal_KeyIntEnable;
 
-#if 1//BAT_DET_EN
-extern uint8 bat_sta;  //0Õý³£  1:µÍµç 
-#endif
-
-
 /**************************************************************************************************
  *                                             FUNCTIONS - API
  **************************************************************************************************/
@@ -138,7 +116,7 @@ extern void HalKeyConfig( bool interruptEnable, const halKeyCBack_t cback);
 /*
  * Read the Key status
  */
-extern uint16 HalKeyRead( void);
+extern uint8 HalKeyRead( void);
 
 /*
  * Enter sleep mode, store important values
@@ -148,7 +126,7 @@ extern void HalKeyEnterSleep ( void );
 /*
  * Exit sleep mode, retore values
  */
-extern uint16 HalKeyExitSleep ( void );
+extern uint8 HalKeyExitSleep ( void );
 
 /*
  * This is for internal used by hal_driver

@@ -125,7 +125,7 @@
  */
 
 // How often to perform periodic event
-#define SBP_PERIODIC_EVT_PERIOD               100  //1000ms
+#define SBP_PERIODIC_EVT_PERIOD               10  //10ms
 
 
 // What is the advertising interval when device is discoverable (units of 625us, 160=100ms)
@@ -186,7 +186,7 @@ extern void simpleBLE_Delay_1ms(int times);
 
 #if BAT_DET_EN
 static uint8 bat_sta=0;         //0正常  1:低电 
-static uint8 bat_sw_sta=0;      //
+static uint8 bat_sw_sta=1;      //
 #endif
 
 #if USER_SW_EN
@@ -545,6 +545,11 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
     LED_DIR |= (LED_BIT);
 	LED_L();
 #endif
+#if BAT_DET_EN
+	P0SEL &= ~0x80; 	//设置P0.7为普通IO口  
+	P0DIR &= ~0x80; 	//按键接在P0.1口上，设P0.7为输入模式 
+	P0INP &= ~0x80; 	//打开P0.7上拉电阻
+#endif
 }
 
 
@@ -617,9 +622,9 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
 #if BAT_DET_EN
      static uint8 adc =0;
 
-     HalAdcSetReference( HAL_ADC_REF_AVDD );
+     //HalAdcSetReference( HAL_ADC_REF_AVDD );
 	 //HalAdcSetReference(HAL_ADC_REF_125V);
-     adc = HalAdcRead( HAL_ADC_CHANNEL_7, HAL_ADC_RESOLUTION_8 );  //1s
+     //adc = HalAdcRead( HAL_ADC_CHANNEL_7, HAL_ADC_RESOLUTION_8 );  //1s
      
      task_battery_check(adc);
 #endif
@@ -700,7 +705,7 @@ void task_battery_check(uint8 bat_vol)
         pktBuffer[2] = bat_vol;
         if(gapProfileState == GAPROLE_CONNECTED)
         {
-           // bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+            bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
         }
 
 #endif
@@ -709,15 +714,15 @@ void task_battery_check(uint8 bat_vol)
 	static uint8 bat_cnt=0;
     static uint16 warning_cnt=0;
     pktBuffer[0] = 0x00;pktBuffer[1] = 0x00;pktBuffer[2] = 0x00;	
-
-	if(bat_vol <=0x15){
-		if(bat_cnt < 5){
+#if 1
+	if(P0_7 ==0){
+		if(bat_cnt < 2){
 			bat_cnt++;
-		}else if(bat_cnt == 5){   //500ms
-			bat_cnt = 6;
+		}else if(bat_cnt == 2){   //20ms
+			bat_cnt = 4;
 			warning_cnt =0;
 			bat_sta =1;           
-			if((gapProfileState == GAPROLE_CONNECTED)&&(bat_sw_sta))
+			if(bat_sw_sta)
 			{
 				pktBuffer[0] = 0x50;
 				pktBuffer[1] = 0x01;
@@ -730,12 +735,34 @@ void task_battery_check(uint8 bat_vol)
 		bat_cnt =0;
 		warning_cnt =0;
     }
+#else
+	if(P0_7 ==0){
+		if(bat_sta==0){
+			
+			pktBuffer[0] = 0x50;
+			pktBuffer[1] = 0x01;
+			pktBuffer[2] = 0x51;
+			bat_sta =1;
+			warning_cnt =0;
+			if(bat_sw_sta)
+			{
+				bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+			}	
+		}
+	}else{
+		if(bat_sta){
+			warning_cnt =0;
+			bat_sta =0;
+			bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+		}
+	}
+#endif
 	
-    if((++warning_cnt >=3000)&&(bat_sta ==1)){   //5分钟一次
+    if((++warning_cnt >=30000)&&(bat_sta ==1)){   //5分钟一次
         pktBuffer[0] = 0x50;
         pktBuffer[1] = 0x01;
         pktBuffer[2] = 0x51;
-        if((gapProfileState == GAPROLE_CONNECTED)&&(bat_sw_sta))
+        if(bat_sw_sta)
         {	 
             bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
         }
@@ -798,41 +825,13 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
 #if USER_SW_EN
   if(key_up_flg ==0)     return;  //500ms  
 #endif 
-  
-  if ( (keys & HAL_KEY_SW_7) &&key_sw_7_sta )
+
+
+  if ( (keys & HAL_KEY_SW_4) &&key_sw_4_sta)
   {
     pktBuffer[0] = 0x40;
-  	pktBuffer[1] = 0x07;
-  	pktBuffer[2] = 0x47;
-  }	
-  
-  if ( (keys & HAL_KEY_SW_6) &&key_sw_6_sta )
-  {
-    pktBuffer[0] = 0x40;
-  	pktBuffer[1] = 0x06;
-  	pktBuffer[2] = 0x46;
-  }
-
-  if ( (keys & HAL_KEY_SW_5 ) &&key_sw_5_sta)
-  {
-    pktBuffer[0] = 0x40;
-  	pktBuffer[1] = 0x05;
-  	pktBuffer[2] = 0x45;
-  }	
-
-  if ((keys & HAL_KEY_SW_1 )&& key_sw_1_sta)
-  {
-
-  	pktBuffer[0] = 0x40;
-  	pktBuffer[1] = 0x01;
-  	pktBuffer[2] = 0x41;
-  }
-  if ( (keys & HAL_KEY_SW_2)&&key_sw_2_sta )
-  {
-
-  	pktBuffer[0] = 0x40;
-  	pktBuffer[1] = 0x02;
-  	pktBuffer[2] = 0x42;
+  	pktBuffer[1] = 0x04;
+  	pktBuffer[2] = 0x44;
   }
   if ( (keys & HAL_KEY_SW_3) &&key_sw_3_sta)
   {
@@ -841,12 +840,41 @@ static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
   	pktBuffer[1] = 0x03;
   	pktBuffer[2] = 0x43;
   }
-  if ( (keys & HAL_KEY_SW_4) &&key_sw_4_sta)
+
+  if ( (keys & HAL_KEY_SW_2)&&key_sw_2_sta )
+  {
+
+  	pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x02;
+  	pktBuffer[2] = 0x42;
+  }	
+  if ((keys & HAL_KEY_SW_1 )&& key_sw_1_sta)
+  {
+
+  	pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x01;
+  	pktBuffer[2] = 0x41;
+  }
+  if ( (keys & HAL_KEY_SW_5 ) &&key_sw_5_sta)
   {
     pktBuffer[0] = 0x40;
-  	pktBuffer[1] = 0x04;
-  	pktBuffer[2] = 0x44;
+  	pktBuffer[1] = 0x05;
+  	pktBuffer[2] = 0x45;
+  }
+
+  if ( (keys & HAL_KEY_SW_6) &&key_sw_6_sta )
+  {
+    pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x06;
+  	pktBuffer[2] = 0x46;
   }	
+  if ( (keys & HAL_KEY_SW_7) &&key_sw_7_sta )
+  {
+    pktBuffer[0] = 0x40;
+  	pktBuffer[1] = 0x07;
+  	pktBuffer[2] = 0x47;
+  }	
+  
  
   if(pktBuffer[0] !=0)
   {

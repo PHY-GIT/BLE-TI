@@ -548,7 +548,7 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 #if BAT_DET_EN
 	P0SEL &= ~0x80; 	//设置P0.7为普通IO口  
 	P0DIR &= ~0x80; 	//按键接在P0.1口上，设P0.7为输入模式 
-	P0INP &= ~0x80; 	//打开P0.7上拉电阻
+    P0INP &= ~0x80; 	//打开P0.7上拉电阻
 #endif
 }
 
@@ -714,6 +714,8 @@ void task_battery_check(uint8 bat_vol)
 	static uint8 bat_cnt=0;
     static uint16 warning_cnt=0;
     pktBuffer[0] = 0x00;pktBuffer[1] = 0x00;pktBuffer[2] = 0x00;	
+
+	static uint8 send_two=0,send_cnt=0;
 #if 1
 	if(P0_7 ==0){
 		if(bat_cnt < 2){
@@ -727,10 +729,13 @@ void task_battery_check(uint8 bat_vol)
 				pktBuffer[0] = 0x50;
 				pktBuffer[1] = 0x01;
 				pktBuffer[2] = 0x51;
+				send_two=1;   //发两次
+				send_cnt =10; //200ms
 				bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
 			}
 		}
 	}else{
+		send_two=0;
 		bat_sta =0;
 		bat_cnt =0;
 		warning_cnt =0;
@@ -764,10 +769,30 @@ void task_battery_check(uint8 bat_vol)
         pktBuffer[2] = 0x51;
         if(bat_sw_sta)
         {	 
+        	send_two=1;
+			send_cnt =20; //200ms
             bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
         }
         warning_cnt =0;
     }
+
+	if(bat_sw_sta)
+	{
+		if(send_two){
+			send_cnt--;
+			if(send_cnt==0){
+				pktBuffer[0] = 0x50;
+        		pktBuffer[1] = 0x01;
+        		pktBuffer[2] = 0x51;
+				send_two =0;
+				send_cnt =0;
+				bt_to_app(pktBuffer,sizeof(pktBuffer) / sizeof(pktBuffer[0]));
+			}
+		}
+	}else{
+		send_two =0;
+		send_cnt=0;
+	}
 	
 #endif
 }

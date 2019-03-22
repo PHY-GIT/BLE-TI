@@ -1,5 +1,1 @@
----- simpleBLEPeripheral_ProcessOSALMsg Matches (4 in 1 files) ----
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg );
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):      simpleBLEPeripheral_ProcessOSALMsg( (osal_event_hdr_t *)pMsg );
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source): * @fn      simpleBLEPeripheral_ProcessOSALMsg
-simpleBLEPeripheral.c (projects\ble\simplebleperipheral\source):static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg )
+---- PDUP0 Matches (0 in 0 files) ----
